@@ -1,0 +1,39 @@
+{
+  "name": "nownembers",
+  "version": "0.0.1",
+  "description": "NOWnews 會員系統",
+  "main": "index.js",
+  "scripts": {
+    "api": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/api.js",
+    "web": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/web.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/nownews/NOWmembers.git"
+  },
+  "author": "Simon Sun",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/nownews/NOWmembers/issues"
+  },
+  "homepage": "https://gitlab.com/nownews/NOWmembers#README",
+  "dependencies": {
+    "babel-core": "^6.17.0",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "bluebird": "^3.4.6",
+    "body-parser": "^1.15.2",
+    "chalk": "^1.1.3",
+    "co": "^4.6.0",
+    "compression": "^1.6.2",
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "lodash": "^4.16.3",
+    "mongoose": "^4.6.2",
+    "morgan": "^1.7.0",
+    "nodemon": "^1.10.2",
+    "pretty-error": "^2.0.1"
+  }
+}
