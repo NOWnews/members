@@ -21,6 +21,9 @@ module.exports = (req, res, next) => {
             return Promise.reject(new Error('找不到使用者'));
         }
 
+        // 拿掉密碼的欄位
+        delete member.password;
+
         return res.json(member);
     })
     .catch(next);
