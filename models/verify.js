@@ -3,39 +3,25 @@ import mongoose, { Schema } from 'mongoose';
 
 const schema = new Schema({
 
-    name: {
-        type: String,
-        required: true
-    },
-
     email: {
         type: String,
         required: true
     },
 
-    password: {
+    token: {
         type: String,
         required: true
     },
 
-    phone: {
-        type: String
-    },
-
-    birthday: {
+    expireTime: {
         type: Date,
-    },
-
-    gender: {
-        type: String,
-        emum: ['MALE', 'FEMALE', 'OTHER'],
-        default: 'OTHER'
+        required: true
     },
 
     status: {
         type: String,
-        emum: ['PENDING', 'VERIFIED', 'SUSPENDED'],
-        default: 'PENDING'
+        emum: ['UNUSED', 'USED', 'EXPIRE'],
+        default: 'UNUSED'
     },
 
     trashed: {
@@ -59,4 +45,4 @@ const schema = new Schema({
     }
 });
 
-module.exports = mongoose.model('member', schema);
+module.exports = mongoose.model('verify', schema);

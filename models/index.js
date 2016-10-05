@@ -14,7 +14,9 @@ const connection = mongoose.connection;
 console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mongodb.db}`));
 
 import member from './member';
+import verify from './verify';
 
 module.exports = {
-    Member: member
+    Member: member,
+    Verify: verify
 };
