@@ -24,6 +24,7 @@ module.exports = (req, res, next) => {
 
         let member = yield Member.findOne()
             .where('email').equals(email)
+            .where('trashed').equals(false)
             .execAsync();
 
         if(!member) {

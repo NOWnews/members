@@ -14,6 +14,8 @@ module.exports = (req, res, next) => {
         let member = yield Member.findOne()
             .where('email').equals(email)
             .where('password').equals(hashPwd(password))
+            .where('status').equals('VERIFIED')
+            .where('trashed').equals(false)
             .select('-password')
             .execAsync();
 
