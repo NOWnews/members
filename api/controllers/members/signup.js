@@ -8,6 +8,8 @@ import randToken from 'rand-token';
 import { hashPwd, mailer } from '../../../libs';
 import { Member, Verify } from '../../../models';
 
+const birthdatRegexpString = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+
 module.exports = (req, res, next) => {
 
     let { name, email, password, confirmPassword, phone, birthday, gender } = req.body;
@@ -45,8 +47,8 @@ module.exports = (req, res, next) => {
             memberData.phone = phone;
         }
 
-        if(birthday) {
-            memberData.birthday = birthday;
+        if(birthday && birthdatRegexpString.test(birthday)) {
+            memberData.birthday = moment(birthday);
         }
 
         if(gender) {
