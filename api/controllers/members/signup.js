@@ -10,9 +10,13 @@ import { Member, Verify } from '../../../models';
 
 module.exports = (req, res, next) => {
 
-    let { name, email, password, phone, birthday, gender } = req.body;
+    let { name, email, password, confirmPassword, phone, birthday, gender } = req.body;
 
     co(function*() {
+
+        if(password !== confirmPassword) {
+            return Promise.reject(new Error('輸入的密碼不ㄧ致，請重新輸入'));
+        }
 
         let aliveMember = yield Member.findOne()
             .where('email').equals(email)
