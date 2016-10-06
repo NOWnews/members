@@ -34,6 +34,7 @@
     "moment-timezone": "^0.5.5",
     "mongoose": "^4.6.2",
     "morgan": "^1.7.0",
+    "node-fetch": "^1.6.3",
     "nodemailer": "^2.6.4",
     "nodemon": "^1.10.2",
     "nunjucks": "^2.5.2",
