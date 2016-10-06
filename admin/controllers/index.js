@@ -5,7 +5,7 @@ import models from '../../models';
 
 module.exports = (app) => {
 
-    app.use('/', members);
+    app.use('/admin/', members);
 
     return (req, res, next) => {
         return next();
