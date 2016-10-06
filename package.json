@@ -6,6 +6,7 @@
   "scripts": {
     "api": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/api.js",
     "web": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/web.js",
+    "admin": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/admin.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
