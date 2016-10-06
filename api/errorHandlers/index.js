@@ -7,7 +7,7 @@ module.exports = (app) => {
 
     app.use((err, req, res, next) => {
         console.log(prettyError.render(err));
-        return res.status(400);
+        return res.sendStatus(400);
     });
 
     return (req, res, next) => {
