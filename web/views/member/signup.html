@@ -491,10 +491,10 @@ xsigin/signup popup
     display: none;
   }
 }
-#cd-login {
+/*#cd-login {
   display: block;
-}
-#cd-signup, #cd-reset-password {
+}*/
+#cd-login, #cd-signup, #cd-reset-password {
   display: none;
 }
 
@@ -504,13 +504,13 @@ xsigin/signup popup
 
 </style>
 <header role="banner">
-    <div id="cd-logo"><a href="#0"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-logo_1.svg" alt="Logo"></a></div>
+    <div id="cd-logo"><a href="#0"><img src="http://m.nownews.com/static/img/mobile-logo.png" alt="Logo"></a></div>
 
     <nav class="main-nav">
         <ul>
             <!-- inser more links here -->
-            <li><a class="cd-signin" href="#0">Sign in</a></li>
-            <li><a class="cd-signup" href="#0">Sign up</a></li>
+            <li><a class="cd-signin" href="#0">登入</a></li>
+            <li><a class="cd-signup" href="#0">註冊</a></li>
         </ul>
     </nav>
 </header>
@@ -518,8 +518,8 @@ xsigin/signup popup
 <div class="acd-user-modal is-visible"> <!-- this is the entire modal form, including the background -->
     <div class="cd-user-modal-container"> <!-- this is the container wrapper -->
         <ul class="cd-switcher">
-            <li><a href="#0">Sign in</a></li>
-            <li><a href="#0">New account</a></li>
+            <li><a href="#0">登入</a></li>
+            <li><a href="#0">註冊</a></li>
         </ul>
 
         <div id="cd-login"> <!-- log in form -->
@@ -531,8 +531,8 @@ xsigin/signup popup
                 </p>
 
                 <p class="fieldset">
-                    <label class="image-replace cd-password" for="signin-password">Password</label>
-                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password">
+                    <label class="image-replace cd-password" for="signin-password">密碼</label>
+                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="密碼">
                     <a href="#0" class="hide-password">Hide</a>
                     <span class="cd-error-message">Error message here!</span>
                 </p>
@@ -543,19 +543,19 @@ xsigin/signup popup
                 </p>
 
                 <p class="fieldset">
-                    <input class="full-width" type="submit" value="Login">
+                    <input class="full-width" type="submit" value="登入">
                 </p>
             </form>
 
-            <p class="cd-form-bottom-message"><a href="#0">Forgot your password?</a></p>
+            <p class="cd-form-bottom-message"><a href="#0">忘記密碼?</a></p>
             <!-- <a href="#0" class="cd-close-form">Close</a> -->
         </div> <!-- cd-login -->
 
         <div id="cd-signup"> <!-- sign up form -->
             <form class="cd-form">
                 <p class="fieldset">
-                    <label class="image-replace cd-username" for="signup-username">Username</label>
-                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
+                    <label class="image-replace cd-username" for="signup-username">使用者名稱</label>
+                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="使用者名稱">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
@@ -566,15 +566,15 @@ xsigin/signup popup
                 </p>
 
                 <p class="fieldset">
-                    <label class="image-replace cd-password" for="signup-password">Password</label>
-                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
+                    <label class="image-replace cd-password" for="signup-password">密碼</label>
+                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="密碼">
                     <a href="#0" class="hide-password">Hide</a>
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
                 <p class="fieldset">
                     <input type="checkbox" id="accept-terms">
-                    <label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
+                    <label for="accept-terms">我同意 <a href="#0">最終用戶授權協議</a></label>
                 </p>
 
                 <p class="fieldset">
@@ -600,7 +600,7 @@ xsigin/signup popup
                 </p>
             </form>
 
-            <p class="cd-form-bottom-message"><a href="#0">Back to log-in</a></p>
+            <p class="cd-form-bottom-message"><a href="#0">返回登入頁</a></p>
         </div> <!-- cd-reset-password -->
         <a href="#0" class="cd-close-form">Close</a>
     </div> <!-- cd-user-modal-container -->
