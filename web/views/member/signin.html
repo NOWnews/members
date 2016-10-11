@@ -1,335 +1,757 @@
 {% extends "../base.html" %}
 {% block head %}
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700,300,600">
+<script   src="https://code.jquery.com/jquery-2.1.3.min.js"   integrity="sha256-ivk71nXhz9nsyFDoYoGf2sbjrR9ddh+XDkCcfZxjvcM="   crossorigin="anonymous"></script>
+<script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
+
+<link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
 <style>
-    * {
-        margin: 0px auto;
-        padding: 0px;
-        font-family: 'Open Sans', sans-serif;
-    }
+/* --------------------------------
 
-    .cont_principal {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        /* Rectangle 3: */
-        background-image: linear-gradient(-87deg, #F2F5F6 0%, #DDE5E8 100%);
-    }
+Primary style
 
-    .cont_centrar {
-        position: absolute;
-        width: 320px;
-        left: 50%;
-        top: 50px;
-        margin-left: -160px;
-        /*margin-top: -160px;*/
-    }
+-------------------------------- */
+html * {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
 
-    .cont_centrar {
-        position: relative;
-        width: 320px;
-        float: left;
-        background-image: linear-gradient(-226deg, #FFFFFF 8%, #EEF3F5 100%);
-        border-radius: 8px;
-        transition: all 0.5s;
-    }
+*, *:after, *:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
 
-    .cent_active {
-        box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.21);
-    }
+body {
+  font-size: 100%;
+  font-family: "PT Sans", sans-serif;
+  color: #505260;
+  background-color: #fff;
+}
 
-    .cont_tabs_login {
-        position: relative;
-        float: left;
-        width: 100%;
-    }
+a {
+  color: #2f889a;
+  text-decoration: none;
+}
 
-    .ul_tabs>li {
-        position: relative;
-        float: left;
-        width: 50%;
-        list-style: none;
-        text-align: center;
-    }
+img {
+  max-width: 100%;
+}
 
-    .ul_tabs>li>a {
-        text-decoration: none;
-        font-family: Helvetica;
-        font-size: 16px;
-        color: #999;
-        line-height: 14px;
-        padding: 20px;
-        display: block;
-        transition: all 0.5s;
-    }
+input, textarea {
+  font-family: "PT Sans", sans-serif;
+  font-size: 16px;
+  font-size: 1rem;
+}
+input::-ms-clear, textarea::-ms-clear {
+  display: none;
+}
 
-    .ul_tabs>.active>a {
-        color: #2196F3;
-    }
+/* --------------------------------
 
-    .linea_bajo_nom {
-        position: relative;
-        width: 100%;
-        float: left;
-        background-color: #999;
-        height: 2px;
-    }
+Main components
 
-    .active .linea_bajo_nom {
-        position: relative;
-        width: 100%;
-        float: left;
-        background-color: #2196F3;
-        height: 2px;
-    }
+-------------------------------- */
+header[role=banner] {
+  position: relative;
+  height: 50px;
+  background: #343642;
+}
+header[role=banner] #cd-logo {
+  float: left;
+  margin: 4px 0 0 5%;
+  /* reduce logo size on mobile and make sure it is left aligned with the transform-origin property */
+  -webkit-transform-origin: 0 50%;
+  -moz-transform-origin: 0 50%;
+  -ms-transform-origin: 0 50%;
+  -o-transform-origin: 0 50%;
+  transform-origin: 0 50%;
+  -webkit-transform: scale(0.8);
+  -moz-transform: scale(0.8);
+  -ms-transform: scale(0.8);
+  -o-transform: scale(0.8);
+  transform: scale(0.8);
+}
+header[role=banner] #cd-logo img {
+  display: block;
+}
+header[role=banner]::after {
+  /* clearfix */
+  content: '';
+  display: table;
+  clear: both;
+}
+@media only screen and (min-width: 768px) {
+  header[role=banner] {
+    height: 80px;
+  }
+  header[role=banner] #cd-logo {
+    margin: 20px 0 0 5%;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+  }
+}
 
-    .cont_text_inputs {
-        position: relative;
-        float: left;
-        width: 100%;
-        margin-top: 20px;
-    }
+.main-nav {
+  float: right;
+  margin-right: 5%;
+  width: 44px;
+  height: 100%;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-menu.svg") no-repeat center center;
+  cursor: pointer;
+}
+.main-nav ul {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  -webkit-transform: translateY(-100%);
+  -moz-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  -o-transform: translateY(-100%);
+  transform: translateY(-100%);
+}
+.main-nav ul.is-visible {
+  -webkit-transform: translateY(50px);
+  -moz-transform: translateY(50px);
+  -ms-transform: translateY(50px);
+  -o-transform: translateY(50px);
+  transform: translateY(50px);
+}
+.main-nav a {
+  display: block;
+  height: 50px;
+  line-height: 50px;
+  padding-left: 5%;
+  background: #292a34;
+  border-top: 1px solid #3b3d4b;
+  color: #FFF;
+}
+@media only screen and (min-width: 768px) {
+  .main-nav {
+    width: auto;
+    height: auto;
+    background: none;
+    cursor: auto;
+  }
+  .main-nav ul {
+    position: static;
+    width: auto;
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+    line-height: 80px;
+  }
+  .main-nav ul.is-visible {
+    -webkit-transform: translateY(0);
+    -moz-transform: translateY(0);
+    -ms-transform: translateY(0);
+    -o-transform: translateY(0);
+    transform: translateY(0);
+  }
+  .main-nav li {
+    display: inline-block;
+    margin-left: 1em;
+  }
+  .main-nav li:nth-last-child(2) {
+    margin-left: 2em;
+  }
+  .main-nav a {
+    display: inline-block;
+    height: auto;
+    line-height: normal;
+    background: transparent;
+  }
+  .main-nav a.cd-signin, .main-nav a.cd-signup {
+    padding: .6em 1em;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50em;
+  }
+  .main-nav a.cd-signup {
+    background: #2f889a;
+    border: none;
+  }
+}
 
-    .input_form_sign {
-        position: relative;
-        float: left;
-        width: 90%;
-        border: none;
-        border-bottom: 1px solid #B0BEC5;
-        background-color: transparent;
-        font-size: 14px;
-        outline: none;
-        transition: all 0.5s;
-        height: 0px;
-        margin: 0px;
-        padding: 0px;
-        opacity: 0;
-        display: none;
-    }
+/* --------------------------------
 
-    .active_inp {
-        margin: 5% 5%;
-        padding: 10px 0px;
-        opacity: 1;
-        height: 5px;
-    }
+xsigin/signup popup
 
-    .input_form_sign:focus {
-        border-bottom: 1px solid #2196F3;
-    }
+-------------------------------- */
+.cd-user-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(52, 54, 66, 0.9);
+  z-index: 3;
+  overflow-y: auto;
+  cursor: pointer;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 0.3s 0, visibility 0 0.3s;
+  -moz-transition: opacity 0.3s 0, visibility 0 0.3s;
+  transition: opacity 0.3s 0, visibility 0 0.3s;
+}
+.cd-user-modal.is-visible {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity 0.3s 0, visibility 0 0;
+  -moz-transition: opacity 0.3s 0, visibility 0 0;
+  transition: opacity 0.3s 0, visibility 0 0;
+}
+.cd-user-modal.is-visible .cd-user-modal-container {
+  -webkit-transform: translateY(0);
+  -moz-transform: translateY(0);
+  -ms-transform: translateY(0);
+  -o-transform: translateY(0);
+  transform: translateY(0);
+}
 
-    .link_forgot_pass {
-        position: relative;
-        margin-top: 0px;
-        margin-left: 30%;
-        text-decoration: none;
-        color: #999;
-        font-size: 13px;
-        display: none;
-        float: left;
-        transition: all 0.5s;
-    }
+.cd-user-modal-container {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  background: #FFF;
+  margin: 3em auto 4em;
+  cursor: auto;
+  border-radius: 0.25em;
+  -webkit-transform: translateY(-30px);
+  -moz-transform: translateY(-30px);
+  -ms-transform: translateY(-30px);
+  -o-transform: translateY(-30px);
+  transform: translateY(-30px);
+  -webkit-transition-property: -webkit-transform;
+  -moz-transition-property: -moz-transform;
+  transition-property: transform;
+  -webkit-transition-duration: 0.3s;
+  -moz-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+}
+.cd-user-modal-container .cd-switcher::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+.cd-user-modal-container .cd-switcher li {
+  width: 50%;
+  float: left;
+  text-align: center;
+}
+.cd-user-modal-container .cd-switcher li:first-child a {
+  border-radius: .25em 0 0 0;
+}
+.cd-user-modal-container .cd-switcher li:last-child a {
+  border-radius: 0 .25em 0 0;
+}
+.cd-user-modal-container .cd-switcher a {
+  display: block;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  background: #d2d8d8;
+  color: #809191;
+}
+.cd-user-modal-container .cd-switcher a.selected {
+  background: #FFF;
+  color: #505260;
+}
+@media only screen and (min-width: 600px) {
+  .cd-user-modal-container {
+    margin: 4em auto;
+  }
+  .cd-user-modal-container .cd-switcher a {
+    height: 70px;
+    line-height: 70px;
+  }
+}
 
-    .cont_btn {
-        position: relative;
-        float: left;
-    }
+.cd-form {
+  padding: 1.4em;
+}
+.cd-form .fieldset {
+  position: relative;
+  margin: 1.4em 0;
+}
+.cd-form .fieldset:first-child {
+  margin-top: 0;
+}
+.cd-form .fieldset:last-child {
+  margin-bottom: 0;
+}
+.cd-form label {
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.cd-form label.image-replace {
+  /* replace text with an icon */
+  display: inline-block;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  bottom: auto;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+  color: transparent;
+  text-shadow: none;
+  background-repeat: no-repeat;
+  background-position: 50% 0;
+}
+.cd-form label.cd-username {
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-username.svg");
+}
+.cd-form label.cd-email {
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-email.svg");
+}
+.cd-form label.cd-password {
+  background-image: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-password.svg");
+}
+.cd-form input {
+  margin: 0;
+  padding: 0;
+  border-radius: 0.25em;
+}
+.cd-form input.full-width {
+  width: 100%;
+}
+.cd-form input.has-padding {
+  padding: 12px 20px 12px 50px;
+}
+.cd-form input.has-border {
+  border: 1px solid #d2d8d8;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+.cd-form input.has-border:focus {
+  border-color: #343642;
+  box-shadow: 0 0 5px rgba(52, 54, 66, 0.1);
+  outline: none;
+}
+.cd-form input.has-error {
+  border: 1px solid #d76666;
+}
+.cd-form input[type=password] {
+  /* space left for the HIDE button */
+  padding-right: 65px;
+}
+.cd-form input[type=submit] {
+  padding: 16px 0;
+  cursor: pointer;
+  background: #2f889a;
+  color: #FFF;
+  font-weight: bold;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  -o-appearance: none;
+  appearance: none;
+}
+.no-touch .cd-form input[type=submit]:hover, .no-touch .cd-form input[type=submit]:focus {
+  background: #3599ae;
+  outline: none;
+}
+.cd-form .hide-password {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 6px 15px;
+  border-left: 1px solid #d2d8d8;
+  top: 50%;
+  bottom: auto;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 14px;
+  font-size: 0.875rem;
+  color: #343642;
+}
+.cd-form .cd-error-message {
+  display: inline-block;
+  position: absolute;
+  left: -5px;
+  bottom: -35px;
+  background: rgba(215, 102, 102, 0.9);
+  padding: .8em;
+  z-index: 2;
+  color: #FFF;
+  font-size: 13px;
+  font-size: 0.8125rem;
+  border-radius: 0.25em;
+  /* prevent click and touch events */
+  pointer-events: none;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s 0, visibility 0 0.2s;
+  -moz-transition: opacity 0.2s 0, visibility 0 0.2s;
+  transition: opacity 0.2s 0, visibility 0 0.2s;
+}
+.cd-form .cd-error-message::after {
+  /* triangle */
+  content: '';
+  position: absolute;
+  left: 22px;
+  bottom: 100%;
+  height: 0;
+  width: 0;
+  border-bottom: 8px solid rgba(215, 102, 102, 0.9);
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+}
+.cd-form .cd-error-message.is-visible {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transition: opacity 0.2s 0, visibility 0 0;
+  -moz-transition: opacity 0.2s 0, visibility 0 0;
+  transition: opacity 0.2s 0, visibility 0 0;
+}
+@media only screen and (min-width: 600px) {
+  .cd-form {
+    padding: 2em;
+  }
+  .cd-form .fieldset {
+    margin: 2em 0;
+  }
+  .cd-form .fieldset:first-child {
+    margin-top: 0;
+  }
+  .cd-form .fieldset:last-child {
+    margin-bottom: 0;
+  }
+  .cd-form input.has-padding {
+    padding: 16px 20px 16px 50px;
+  }
+  .cd-form input[type=submit] {
+    padding: 16px 0;
+  }
+}
 
-    .btn_sign {
-        background: rgba(33, 150, 243, 0.74);
-        box-shadow: 0px 2px 20px 2px rgba(33, 150, 243, 0.50);
-        border-radius: 8px;
-        padding: 15px 30px;
-        border: none;
-        color: #fff;
-        font-size: 14px;
-        position: relative;
-        float: left;
-        margin-left: 100px;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        cursor: pointer;
-    }
+.cd-form-message {
+  padding: 1.4em 1.4em 0;
+  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  text-align: center;
+}
+@media only screen and (min-width: 600px) {
+  .cd-form-message {
+    padding: 2em 2em 0;
+  }
+}
 
-    .terms_and_cons {
-        width: 70%;
-        color: #999;
-        font-size: 13px;
-        transition: all 0.5s;
-    }
+.cd-form-bottom-message {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: -30px;
+  text-align: center;
+  font-size: 14px;
+  font-size: 0.875rem;
+}
+.cd-form-bottom-message a {
+  color: #FFF;
+  text-decoration: underline;
+}
 
-    .d_none {
-        display: none;
-    }
+.cd-close-form {
+  /* form X button on top right */
+  display: block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  right: 0;
+  top: -40px;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-icon-close.svg") no-repeat center center;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@media only screen and (min-width: 1170px) {
+  .cd-close-form {
+    display: none;
+  }
+}
 
-    .d_block {
-        display: block;
-    }
+#cd-login, #cd-signup, #cd-reset-password {
+  display: none;
+}
 
-    .cont_text_inputs>input:nth-child(1) {
-        transition-delay: 0.2s;
-    }
+#cd-login.is-selected, #cd-signup.is-selected, #cd-reset-password.is-selected {
+  display: block;
+}
 
-    .cont_text_inputs>input:nth-child(2) {
-        transition-delay: 0.4s;
-    }
-
-    .cont_text_inputs>input:nth-child(3) {
-        transition-delay: 0.6s;
-    }
-
-    .cont_text_inputs>input:nth-child(4) {
-        transition-delay: 0.8s;
-    }
 </style>
-{% endblock %}
-{% block container %}
-<div class="cont_principal">
+<header role="banner">
+    <div id="cd-logo"><a href="#0"><img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/cd-logo_1.svg" alt="Logo"></a></div>
 
-    <div class="cont_centrar">
-        <div class="cont_login">
-            <form class="member-form" action="" method="post">
-                <div class="cont_tabs_login">
-                    <ul class='ul_tabs'>
-                        <li class="active"><a href="#" onclick="sign_in()">登入</a>
-                            <span class="linea_bajo_nom"></span>
-                        </li>
-                        <li><a href="#up" onclick="sign_up()">註冊</a><span class="linea_bajo_nom"></span>
-                        </li>
-                    </ul>
-                </div>
-                <div class="cont_text_inputs">
-                    <input type="text" class="input_form_sign" placeholder="姓名" name="name" />
+    <nav class="main-nav">
+        <ul>
+            <!-- inser more links here -->
+            <li><a class="cd-signin" href="#0">Sign in</a></li>
+            <li><a class="cd-signup" href="#0">Sign up</a></li>
+        </ul>
+    </nav>
+</header>
 
-                    <input type="text" class="input_form_sign d_block active_inp" placeholder="帳號(EMAIL)" name="email" />
-                    <input type="text" class="input_form_sign" placeholder="電話" name="phone" />
-                    <input type="text" class="input_form_sign" placeholder="出生年月日(xxxx-xx-xx)" name="birthday" />
-                    <input type="text" class="input_form_sign" placeholder="性別" name="gender" />
+<div class="cd-user-modal"> <!-- this is the entire modal form, including the background -->
+    <div class="cd-user-modal-container"> <!-- this is the container wrapper -->
+        <ul class="cd-switcher">
+            <li><a href="#0">Sign in</a></li>
+            <li><a href="#0">New account</a></li>
+        </ul>
 
-                    <input type="password" class="input_form_sign d_block  active_inp" placeholder="密碼" name="password" />
-                    <input type="password" class="input_form_sign" placeholder="確認密碼" name="confirmPassword" />
+        <div id="cd-login"> <!-- log in form -->
+            <form class="cd-form">
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="signin-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
 
-                    <a href="#" class="link_forgot_pass d_block">忘記密碼 ?</a>
-                    <div class="terms_and_cons d_none">
-                        <p>
-                            <input type="checkbox" name="terms_and_cons" />
-                            <label for="terms_and_cons">同意使用條款</label>
-                        </p>
+                <p class="fieldset">
+                    <label class="image-replace cd-password" for="signin-password">Password</label>
+                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="Password">
+                    <a href="#0" class="hide-password">Hide</a>
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
 
-                    </div>
-                </div>
-                <div class="cont_btn">
-                    <button class="btn_sign">登入</button>
-                </div>
+                <p class="fieldset">
+                    <input type="checkbox" id="remember-me" checked>
+                    <label for="remember-me">Remember me</label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width" type="submit" value="Login">
+                </p>
             </form>
-        </div>
-    </div>
-</div>
+
+            <p class="cd-form-bottom-message"><a href="#0">Forgot your password?</a></p>
+            <!-- <a href="#0" class="cd-close-form">Close</a> -->
+        </div> <!-- cd-login -->
+
+        <div id="cd-signup"> <!-- sign up form -->
+            <form class="cd-form">
+                <p class="fieldset">
+                    <label class="image-replace cd-username" for="signup-username">Username</label>
+                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="Username">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="signup-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-password" for="signup-password">Password</label>
+                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="Password">
+                    <a href="#0" class="hide-password">Hide</a>
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <input type="checkbox" id="accept-terms">
+                    <label for="accept-terms">I agree to the <a href="#0">Terms</a></label>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width has-padding" type="submit" value="Create account">
+                </p>
+            </form>
+
+            <!-- <a href="#0" class="cd-close-form">Close</a> -->
+        </div> <!-- cd-signup -->
+
+        <div id="cd-reset-password"> <!-- reset password form -->
+            <p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
+
+            <form class="cd-form">
+                <p class="fieldset">
+                    <label class="image-replace cd-email" for="reset-email">E-mail</label>
+                    <input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <input class="full-width has-padding" type="submit" value="Reset password">
+                </p>
+            </form>
+
+            <p class="cd-form-bottom-message"><a href="#0">Back to log-in</a></p>
+        </div> <!-- cd-reset-password -->
+        <a href="#0" class="cd-close-form">Close</a>
+    </div> <!-- cd-user-modal-container -->
+</div> <!-- cd-user-modal -->
+
+
 <script>
-    function sign_up() {
-        var inputs = document.querySelectorAll('.input_form_sign');
-        document.getElementsByClassName('member-form')[0].setAttribute('action', '/signup');
-        document.querySelectorAll('.ul_tabs > li')[0].className = "";
-        document.querySelectorAll('.ul_tabs > li')[1].className = "active";
+jQuery(document).ready(function($){
+    var $form_modal = $('.cd-user-modal'),
+        $form_login = $form_modal.find('#cd-login'),
+        $form_signup = $form_modal.find('#cd-signup'),
+        $form_forgot_password = $form_modal.find('#cd-reset-password'),
+        $form_modal_tab = $('.cd-switcher'),
+        $tab_login = $form_modal_tab.children('li').eq(0).children('a'),
+        $tab_signup = $form_modal_tab.children('li').eq(1).children('a'),
+        $forgot_password_link = $form_login.find('.cd-form-bottom-message a'),
+        $back_to_login_link = $form_forgot_password.find('.cd-form-bottom-message a'),
+        $main_nav = $('.main-nav');
 
-        for (var i = 0; i < inputs.length; i++) {
-            if (i == 2) {
-            } else {
-                document.querySelectorAll('.input_form_sign')[i].className = "input_form_sign d_block";
-            }
+    //open modal
+    $main_nav.on('click', function(event){
+
+        if( $(event.target).is($main_nav) ) {
+            // on mobile open the submenu
+            $(this).children('ul').toggleClass('is-visible');
+        } else {
+            // on mobile close submenu
+            $main_nav.children('ul').removeClass('is-visible');
+            //show modal layer
+            $form_modal.addClass('is-visible');
+            //show the selected form
+            ( $(event.target).is('.cd-signup') ) ? signup_selected() : login_selected();
         }
 
-        setTimeout(function() {
-            for (var d = 0; d < inputs.length; d++) {
-                document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign d_block active_inp";
-            }
+    });
 
-        }, 100);
-        document.querySelector('.link_forgot_pass').style.opacity = "0";
-        document.querySelector('.link_forgot_pass').style.top = "-5px";
-        document.querySelector('.btn_sign').innerHTML = "註冊";
-        setTimeout(function() {
-
-            document.querySelector('.terms_and_cons').style.opacity = "1";
-            document.querySelector('.terms_and_cons').style.top = "5px";
-
-        }, 500);
-        setTimeout(function() {
-            document.querySelector('.link_forgot_pass').className = "link_forgot_pass d_none";
-            document.querySelector('.terms_and_cons').className = "terms_and_cons d_block";
-        }, 450);
-
-    }
-
-    function sign_in() {
-        var inputs = document.querySelectorAll('.input_form_sign');
-        document.getElementsByClassName('member-form')[0].setAttribute('action', '/signin');
-        document.querySelectorAll('.ul_tabs > li')[0].className = "active";
-        document.querySelectorAll('.ul_tabs > li')[1].className = "";
-
-        for (var i = 0; i < inputs.length; i++) {
-            switch (i) {
-                case 1:
-                    console.log(inputs[i].name);
-                    break;
-                case 2:
-                    console.log(inputs[i].name);
-                default:
-                    document.querySelectorAll('.input_form_sign')[i].className = "input_form_sign d_block";
-            }
+    //close modal
+    $('.cd-user-modal').on('click', function(event){
+        if( $(event.target).is($form_modal) || $(event.target).is('.cd-close-form') ) {
+            $form_modal.removeClass('is-visible');
         }
+    });
+    //close modal when clicking the esc keyboard button
+    $(document).keyup(function(event){
+        if(event.which=='27'){
+            $form_modal.removeClass('is-visible');
+        }
+    });
 
-        setTimeout(function() {
-            for (var d = 0; d < inputs.length; d++) {
-                switch (d) {
-                    case 1:
-                        console.log(inputs[d].name);
-                        break;
-                    case 2:
-                        console.log(inputs[d].name);
+    //switch from a tab to another
+    $form_modal_tab.on('click', function(event) {
+        event.preventDefault();
+        ( $(event.target).is( $tab_login ) ) ? login_selected() : signup_selected();
+    });
 
-                    default:
-                        document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign d_block";
-                        document.querySelectorAll('.input_form_sign')[2].className = "input_form_sign d_block active_inp";
+    //hide or show password
+    $('.hide-password').on('click', function(){
+        var $this= $(this),
+            $password_field = $this.prev('input');
 
-                }
-            }
-        }, 100);
+        ( 'password' == $password_field.attr('type') ) ? $password_field.attr('type', 'text') : $password_field.attr('type', 'password');
+        ( 'Hide' == $this.text() ) ? $this.text('Show') : $this.text('Hide');
+        //focus and move cursor to the end of input field
+        $password_field.putCursorAtEnd();
+    });
 
-        document.querySelector('.terms_and_cons').style.opacity = "0";
-        document.querySelector('.terms_and_cons').style.top = "-5px";
+    //show forgot-password form
+    $forgot_password_link.on('click', function(event){
+        event.preventDefault();
+        forgot_password_selected();
+    });
 
-        setTimeout(function() {
-            document.querySelector('.terms_and_cons').className = "terms_and_cons d_none";
-            document.querySelector('.link_forgot_pass').className = "link_forgot_pass d_block";
+    //back to login from the forgot-password form
+    $back_to_login_link.on('click', function(event){
+        event.preventDefault();
+        login_selected();
+    });
 
-        }, 500);
-
-        setTimeout(function() {
-
-            document.querySelector('.link_forgot_pass').style.opacity = "1";
-            document.querySelector('.link_forgot_pass').style.top = "5px";
-
-            for (var d = 0; d < inputs.length; d++) {
-
-                switch (d) {
-                    case 1:
-                        console.log(inputs[d].name);
-                        break;
-                    case 2:
-                        console.log(inputs[d].name);
-
-                        break;
-                    default:
-                        document.querySelectorAll('.input_form_sign')[d].className = "input_form_sign";
-                }
-            }
-        }, 1500);
-        document.querySelector('.btn_sign').innerHTML = "登入";
+    function login_selected(){
+        $form_login.addClass('is-selected');
+        $form_signup.removeClass('is-selected');
+        $form_forgot_password.removeClass('is-selected');
+        $tab_login.addClass('selected');
+        $tab_signup.removeClass('selected');
     }
 
-    window.onload = function() {
-        document.querySelector('.cont_centrar').className = "cont_centrar cent_active";
+    function signup_selected(){
+        $form_login.removeClass('is-selected');
+        $form_signup.addClass('is-selected');
+        $form_forgot_password.removeClass('is-selected');
+        $tab_login.removeClass('selected');
+        $tab_signup.addClass('selected');
     }
+
+    function forgot_password_selected(){
+        $form_login.removeClass('is-selected');
+        $form_signup.removeClass('is-selected');
+        $form_forgot_password.addClass('is-selected');
+    }
+
+    //REMOVE THIS - it's just to show error messages
+    $form_login.find('input[type="submit"]').on('click', function(event){
+        event.preventDefault();
+        $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+    });
+    $form_signup.find('input[type="submit"]').on('click', function(event){
+        event.preventDefault();
+        $form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+    });
+
+
+    //IE9 placeholder fallback
+    //credits http://www.hagenburger.net/BLOG/HTML5-Input-Placeholder-Fix-With-jQuery.html
+    if(!Modernizr.input.placeholder){
+        $('[placeholder]').focus(function() {
+            var input = $(this);
+            if (input.val() == input.attr('placeholder')) {
+                input.val('');
+            }
+        }).blur(function() {
+            var input = $(this);
+            if (input.val() == '' || input.val() == input.attr('placeholder')) {
+                input.val(input.attr('placeholder'));
+            }
+        }).blur();
+        $('[placeholder]').parents('form').submit(function() {
+            $(this).find('[placeholder]').each(function() {
+                var input = $(this);
+                if (input.val() == input.attr('placeholder')) {
+                    input.val('');
+                }
+            })
+        });
+    }
+
+});
+
+
+//credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
+jQuery.fn.putCursorAtEnd = function() {
+    return this.each(function() {
+        // If this function exists...
+        if (this.setSelectionRange) {
+            // ... then use it (Doesn't work in IE)
+            // Double the length because Opera is inconsistent about whether a carriage return is one character or two. Sigh.
+            var len = $(this).val().length * 2;
+            this.setSelectionRange(len, len);
+        } else {
+            // ... otherwise replace the contents with itself
+            // (Doesn't work in Google Chrome)
+            $(this).val($(this).val());
+        }
+    });
+};
 </script>
 {% endblock %}
