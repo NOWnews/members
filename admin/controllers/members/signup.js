@@ -69,7 +69,7 @@ module.exports = (req, res, next) => {
         // 讀取會員認證信的樣板
         let html = nunjucks.render('./mailTemplates/confirm.html', {
             expireTime: moment(expireTime).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss'),
-            verifiedLink: `http://m.nownews.com?verify=${verifyToken.token}`
+            verifiedLink: `http://localhost:7777/member?verify=${verifyToken.token}`
         });
 
         // 非同步送出會員認證信
