@@ -15,8 +15,10 @@ console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mong
 
 import member from './member';
 import verify from './verify';
+import resetPassword from './resetPassword';
 
 module.exports = {
     Member: member,
-    Verify: verify
+    Verify: verify,
+    ResetPassword: resetPassword
 };

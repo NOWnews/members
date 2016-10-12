@@ -1,3 +1,7 @@
+/*
+ * 使用者登入
+ */
+const debug = require('debug')('NOWnumbers:api:controllers:members:signin');
 
 import co from 'co';
 import Promise from 'bluebird';
@@ -14,17 +18,21 @@ module.exports = (req, res, next) => {
         let member = yield Member.findOne()
             .where('email').equals(email)
             .where('password').equals(hashPwd(password))
-            .where('status').equals('VERIFIED')
             .where('trashed').equals(false)
             .select('-password')
             .execAsync();
 
         if(!member) {
-            return Promise.reject(new Error('找不到使用者'));
+            return Promise.reject(new Error(10000));
         }
 
-        // 拿掉密碼的欄位
-        delete member.password;
+        if(member && member.status === 'PENDING') {
+            return Promise.reject(new Error(10001));
+        }
+
+        if(member && member.status === 'SUSPENDED') {
+            return Promise.reject(new Error(10002));
+        }
 
         return res.json(member);
     })
