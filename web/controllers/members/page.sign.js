@@ -1,4 +1,6 @@
 
 module.exports = (req, res, next) => {
-    return res.render('member/sign');
+    return res.render('members/sign', {
+        signinUrl: 'members/signin'
+    });
 };
