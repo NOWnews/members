@@ -1,3 +1,7 @@
+/*
+ * 使用者註冊
+ */
+const debug = require('debug')('NOWnumbers:api:controllers:members:signup');
 
 import co from 'co';
 import Promise from 'bluebird';
@@ -17,7 +21,7 @@ module.exports = (req, res, next) => {
     co(function*() {
 
         if(password !== confirmPassword) {
-            return Promise.reject(new Error('輸入的密碼不ㄧ致，請重新輸入'));
+            return Promise.reject(new Error(10003));
         }
 
         let aliveMember = yield Member.findOne()
@@ -26,15 +30,15 @@ module.exports = (req, res, next) => {
             .execAsync();
 
         if(aliveMember && aliveMember.status === 'PENDING') {
-            return Promise.reject(new Error('你的帳號尚未認證，請去 email 信箱收取認證信件'));
+            return Promise.reject(new Error(10001));
         }
 
         if(aliveMember && aliveMember.status === 'SUSPENDED') {
-            return Promise.reject(new Error('你的帳號已經被停權，請聯絡 NOWnews 管理員'));
+            return Promise.reject(new Error(10002));
         }
 
         if(aliveMember && aliveMember.status === 'VERIFIED') {
-            return Promise.reject(new Error('使用者已經存在'));
+            return Promise.reject(new Error(10004));
         }
 
         let memberData = {
@@ -74,9 +78,12 @@ module.exports = (req, res, next) => {
 
         // 非同步送出會員認證信
         mailer({
+            subject: '感謝您註冊 NOWnews 會員',
             to: newMember.email,
             html: html
         });
+
+        delete newMember.password;
 
         return res.json(newMember);
     })

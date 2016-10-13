@@ -12,8 +12,8 @@ module.exports = co.wrap(function*(options) {
     let mailInfo = {
         from: from || '<edm@nownews.com>',
         to: to,
-        subject: subject || '感謝您註冊 NOWnews 會員',
-        html: html || '<p>test<p>'
+        subject: subject || '很重要，請立刻通知我們',
+        html: html || '<h1>如果你收到這封信，這代表發生了很嚴重的錯誤，請馬上回報給我們。<h1>'
     };
 
     return yield new Promise(function(resolve, reject) {
