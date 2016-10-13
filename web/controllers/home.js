@@ -4,7 +4,7 @@ let router = express.Router();
 router.route('/')
     .get((req, res, next) => {
         if (!req.session.user) {
-            return res.redirect('members/signup');
+            return res.redirect('members/sign');
         }
         return res.render('home/home');
     });
