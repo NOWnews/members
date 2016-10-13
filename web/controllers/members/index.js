@@ -1,18 +1,19 @@
 import express from 'express';
 let router = express.Router();
 
-import pageSignup from './page.signup';
-import actionSignup from './action.signup';
+import pageSign from './page.sign';
 import pageSignin from './page.signin';
-import actionSignin from './action.signin';
 import pageVerify from './page.verify';
+import actionSignin from './action.signin';
+import actionSignup from './action.signup';
+
+router.route('/sign')
+    .get(pageSign);
 
 router.route('/signup')
-    .get(pageSignup)
     .post(actionSignup);
 
 router.route('/signin')
-    .get(pageSignin)
     .post(actionSignin);
 
 router.route('/verify')
