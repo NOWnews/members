@@ -6,8 +6,8 @@ module.exports = (req, res, next) => {
     let body = req.body;
 
     co(function*(){
-        let member = yield postApi('api/members/signup', body);
+        let members = yield postApi('api/members/signup', body);
 
-        return res.render('member/signup');
+        return res.render('members/signup');
     }).catch(next);
 };
