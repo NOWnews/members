@@ -5,8 +5,7 @@ import home from './home';
 module.exports = (app) => {
 
     app.use('/', home);
-    app.use('/', members);
-    app.get('/verify', members);
+    app.use('/members', members);
 
     return (req, res, next) => {
         return next();
