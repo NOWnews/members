@@ -27,6 +27,7 @@ body {
   font-family: "PT Sans", sans-serif;
   color: #505260;
   background-color: #fff;
+  background:url(http://www.hdwallpap.com/wp-content/uploads/2014/05/blue_purple_triangle_surface_abstract.jpg) no-repeat;
 }
 
 a {
@@ -469,7 +470,7 @@ xsigin/signup popup
   font-size: 0.875rem;
 }
 .cd-form-bottom-message a {
-  color: #FFF;
+  color: #333;
   text-decoration: underline;
 }
 
@@ -518,28 +519,28 @@ xsigin/signup popup
 <div class="acd-user-modal is-visible"> <!-- this is the entire modal form, including the background -->
     <div class="cd-user-modal-container"> <!-- this is the container wrapper -->
         <ul class="cd-switcher">
-            <li><a href="#0">登入</a></li>
+            <li><a href="#0" class="selected">登入</a></li>
             <li><a href="#0">註冊</a></li>
         </ul>
 
-        <div id="cd-login"> <!-- log in form -->
-            <form class="cd-form">
+        <div id="cd-login" class="is-selected"> <!-- log in form -->
+            <form class="cd-form" action="/signin" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="signin-email">E-mail</label>
-                    <input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="E-mail">
+                    <input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="帳號(EMAIL)" name="email">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
                 <p class="fieldset">
                     <label class="image-replace cd-password" for="signin-password">密碼</label>
-                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="密碼">
-                    <a href="#0" class="hide-password">Hide</a>
+                    <input class="full-width has-padding has-border" id="signin-password" type="text"  placeholder="密碼" name="password">
+                    <a href="#0" class="hide-password">隱藏</a>
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
                 <p class="fieldset">
                     <input type="checkbox" id="remember-me" checked>
-                    <label for="remember-me">Remember me</label>
+                    <label for="remember-me">記住我</label>
                 </p>
 
                 <p class="fieldset">
@@ -552,23 +553,48 @@ xsigin/signup popup
         </div> <!-- cd-login -->
 
         <div id="cd-signup"> <!-- sign up form -->
-            <form class="cd-form">
+            <form class="cd-form" action="/signup" method="post">
                 <p class="fieldset">
-                    <label class="image-replace cd-username" for="signup-username">使用者名稱</label>
-                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="使用者名稱">
+                    <label class="image-replace cd-username" for="signup-username" >使用者名稱</label>
+                    <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="使用者名稱" name="name" value="123">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="signup-email">E-mail</label>
-                    <input class="full-width has-padding has-border" id="signup-email" type="email" placeholder="E-mail">
+                    <input class="full-width has-padding has-border" id="signup-email" type="text" placeholder="E-mail" name="email" value="aa@aa">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-phone" for="signup-phone">Phone</label>
+                    <input class="full-width has-padding has-border" id="signup-phone" type="text" placeholder="電話" name="phone" value="0912345678">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-birthday" for="signup-birthday">出生年月日</label>
+                    <input class="full-width has-padding has-border" id="signup-birthday" type="text" placeholder="出生年月日" name="birthday" value="1987-10-10">
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-gender" for="signup-gender">性別</label>
+                    <input class="full-width has-padding has-border" id="signup-gender" type="text" placeholder="性別" name="gender" value="男">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
                 <p class="fieldset">
                     <label class="image-replace cd-password" for="signup-password">密碼</label>
-                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="密碼">
-                    <a href="#0" class="hide-password">Hide</a>
+                    <input class="full-width has-padding has-border" id="signup-password" type="text"  placeholder="密碼" name="password" value="000000">
+                    <a href="#0" class="hide-password">隱藏</a>
+                    <span class="cd-error-message">Error message here!</span>
+                </p>
+
+                <p class="fieldset">
+                    <label class="image-replace cd-password" for="signup-confirmPassword">確認密碼</label>
+                    <input class="full-width has-padding has-border" id="signup-confirmPassword" type="text"  placeholder="確認密碼" name="confirmPassword" value="000000">
+                    <a href="#0" class="hide-password">隱藏</a>
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
@@ -578,17 +604,17 @@ xsigin/signup popup
                 </p>
 
                 <p class="fieldset">
-                    <input class="full-width has-padding" type="submit" value="Create account">
+                    <input class="full-width has-padding" type="submit" value="建立帳號">
                 </p>
             </form>
 
             <!-- <a href="#0" class="cd-close-form">Close</a> -->
         </div> <!-- cd-signup -->
 
-        <div id="cd-reset-password"> <!-- reset password form -->
-            <p class="cd-form-message">Lost your password? Please enter your email address. You will receive a link to create a new password.</p>
+        <div id="cd-reset-password"> <!-- reset password form  Lost your password? Please enter your email address. You will receive a link to create a new password.-->
+            <p class="cd-form-message">忘記密碼？輸入您的Email。您將會收到重設密碼相關信件</p>
 
-            <form class="cd-form">
+            <form class="cd-form" action="/" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="reset-email">E-mail</label>
                     <input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
@@ -602,7 +628,7 @@ xsigin/signup popup
 
             <p class="cd-form-bottom-message"><a href="#0">返回登入頁</a></p>
         </div> <!-- cd-reset-password -->
-        <a href="#0" class="cd-close-form">Close</a>
+        <!--<a href="#0" class="cd-close-form">Close</a>-->
     </div> <!-- cd-user-modal-container -->
 </div> <!-- cd-user-modal -->
 
@@ -662,7 +688,7 @@ jQuery(document).ready(function($){
             $password_field = $this.prev('input');
 
         ( 'password' == $password_field.attr('type') ) ? $password_field.attr('type', 'text') : $password_field.attr('type', 'password');
-        ( 'Hide' == $this.text() ) ? $this.text('Show') : $this.text('Hide');
+        ( '隱藏' == $this.text() ) ? $this.text('顯示') : $this.text('隱藏');
         //focus and move cursor to the end of input field
         $password_field.putCursorAtEnd();
     });
@@ -685,6 +711,7 @@ jQuery(document).ready(function($){
         $form_forgot_password.removeClass('is-selected');
         $tab_login.addClass('selected');
         $tab_signup.removeClass('selected');
+        console.log('登入');
     }
 
     function signup_selected(){
@@ -693,23 +720,25 @@ jQuery(document).ready(function($){
         $form_forgot_password.removeClass('is-selected');
         $tab_login.removeClass('selected');
         $tab_signup.addClass('selected');
+        console.log('註冊')
     }
 
     function forgot_password_selected(){
         $form_login.removeClass('is-selected');
         $form_signup.removeClass('is-selected');
         $form_forgot_password.addClass('is-selected');
+        console.log('忘記密碼')
     }
 
     //REMOVE THIS - it's just to show error messages
-    $form_login.find('input[type="submit"]').on('click', function(event){
-        event.preventDefault();
-        $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-    });
-    $form_signup.find('input[type="submit"]').on('click', function(event){
-        event.preventDefault();
-        $form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
-    });
+    // $form_login.find('input[type="submit"]').on('click', function(event){
+    //     event.preventDefault();
+    //     $form_login.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+    // });
+    // $form_signup.find('input[type="submit"]').on('click', function(event){
+    //     event.preventDefault();
+    //     $form_signup.find('input[type="email"]').toggleClass('has-error').next('span').toggleClass('is-visible');
+    // });
 
 
     //IE9 placeholder fallback
