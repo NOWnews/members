@@ -28,6 +28,9 @@ module.exports = (app) => {
         keys: ['NOWmember', 'member']
     }));
 
+    // 靜態檔案位置
+    app.use('/static', express.static(rootPath + '/web/public/'));
+
     return (req, res, next) => {
         return next();
     };
