@@ -100,7 +100,7 @@ None
 }
 ```
 
-### `POST` /api/verify/check
+### `POST` /api/verify/confirm
 
 驗證帳戶
 
@@ -227,6 +227,50 @@ None
   "expireTime": "2016-10-15T16:28:32.637Z",
   "_id": "57fe64b0def43b1356c2f1ab",
   "createdAt": "2016-10-12T16:28:32.638Z",
+  "trashed": false,
+  "status": "UNUSED"
+}
+```
+
+### `POST` /api/password/check
+
+確認重設密碼的 token 是否失效
+
+#### Header Parameters
+
+| 參數名稱 | 解釋 | 型態(或列舉) | 是否需要 | 範例 |
+|---|---|---|---|---|
+| X-NOWnews-Members | 驗證是否有存取 api 權限的 token，目前為固定的值 | [`NOWnewsMembersNumberOne`] | √ | `request.header['X-NOWnews-Members'] = 'NOWnewsMembersNumberOne'` |
+
+#### Url Parameters
+
+None
+
+#### Body Parameters
+
+| 參數名稱 | 解釋 | 型態(或列舉) | 是否需要 | 範例 |
+|---|---|---|---|---|
+| token | 驗證碼 | String | √ | `09KF60ivIl35RIWofnKXO3JK` |
+
+#### Query Parameters
+
+None
+
+#### Response Status Code
+
+200
+
+#### Response Data
+
+```
+{
+  "_id": "5800930ea12fc4196b3341ff",
+  "updatedAt": "2016-10-14T08:10:54.689Z",
+  "email": "simon.sun@nownews.com",
+  "token": "09KF60ivIl35RIWofnKXO3JK",
+  "expireTime": "2016-10-17T08:10:54.688Z",
+  "__v": 0,
+  "createdAt": "2016-10-14T08:10:54.689Z",
   "trashed": false,
   "status": "UNUSED"
 }

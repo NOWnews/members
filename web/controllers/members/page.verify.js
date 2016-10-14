@@ -6,7 +6,7 @@ module.exports = (req, res, next) => {
     let token = req.query.token;
 
     co(function*(){
-        let tokenCheck = yield postApi('api/verify/check', {token: token});
+        let tokenCheck = yield postApi('api/verify/confirm', {token: token});
 
         if (tokenCheck.type === 'error') {
             // return res.send(`error code: ${tokenCheck.message}`);

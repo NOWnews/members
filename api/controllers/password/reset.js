@@ -12,6 +12,9 @@ import randToken from 'rand-token';
 import { mailer } from '../../../libs';
 import { Member, ResetPassword } from '../../../models';
 
+import config from '../../../config';
+const env = config.env;
+
 module.exports = (req, res, next) => {
 
     let { email } = req.body;
@@ -62,7 +65,7 @@ module.exports = (req, res, next) => {
         // 讀取會員認證信的樣板
         let html = nunjucks.render('./mailTemplates/resetPassword.html', {
             expireTime: moment(expireTime).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss'),
-            verifiedLink: `http://m.nownews.com?token=${resetPasswordRequest.token}`
+            verifiedLink: `${config[env].web.url}/members/password?token=${resetPasswordRequest.token}`
         });
 
         // 非同步送出會員認證信

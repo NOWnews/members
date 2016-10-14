@@ -1,11 +1,11 @@
 import express from 'express';
 let router = express.Router();
 
-import check from './check';
+import confirm from './confirm';
 import reset from './reset';
 
-router.route('/verify/check')
-    .post(check);
+router.route('/verify/confirm')
+    .post(confirm);
 
 router.route('/verify/reset')
     .post(reset);
