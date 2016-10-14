@@ -12,6 +12,9 @@ import randToken from 'rand-token';
 import { hashPwd, mailer } from '../../../libs';
 import { Member, Verify } from '../../../models';
 
+import config from '../../../config';
+const env = config.env;
+
 const birthdatRegexpString = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
 
 module.exports = (req, res, next) => {
@@ -73,7 +76,8 @@ module.exports = (req, res, next) => {
         // 讀取會員認證信的樣板
         let html = nunjucks.render('./mailTemplates/confirm.html', {
             expireTime: moment(expireTime).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss'),
-            verifiedLink: `http://m.nownews.com?verify=${verifyToken.token}`
+            verifiedLink: `http://m.nownews.com?verify=${verifyToken.token}`,
+            url: `${config[env].web.url}`
         });
 
         // 非同步送出會員認證信

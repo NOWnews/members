@@ -5,7 +5,9 @@ const debug = require('debug')('NOWnumbers:api:controllers:verify:check');
 
 import Promise from 'bluebird';
 import co from 'co';
+import nunjucks from 'nunjucks';
 
+import { mailer } from '../../../libs';
 import { Member, Verify } from '../../../models';
 
 module.exports = (req, res, next) => {
@@ -43,6 +45,18 @@ module.exports = (req, res, next) => {
             verifyInfo.saveAsync(),
             member.saveAsync()
         ];
+
+        // 讀取會員認證信的樣板
+        let html = nunjucks.render('./mailTemplates/verifySuccess.html', {
+            name: member.name
+        });
+
+        // 非同步送出會員認證信
+        mailer({
+            subject: '恭喜您成員 NOWnews 會員',
+            to: member.email,
+            html: html
+        });
 
         return res.json(verifyInfo);
     })
