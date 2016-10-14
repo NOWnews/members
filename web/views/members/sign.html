@@ -29,7 +29,7 @@
         </ul>
 
         <div id="cd-login" class="is-selected"> <!-- log in form -->
-            <form class="cd-form" action="/signin" method="post">
+            <form class="cd-form" action="{{ signinUrl }}" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="signin-email">E-mail</label>
                     <input class="full-width has-padding has-border" id="signin-email" type="email" placeholder="帳號(EMAIL)" name="email">
@@ -58,7 +58,7 @@
         </div> <!-- cd-login -->
 
         <div id="cd-signup"> <!-- sign up form -->
-            <form class="cd-form" action="/signup" method="post">
+            <form class="cd-form" action="{{ signupUrl }}" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-username" for="signup-username" >使用者名稱</label>
                     <input class="full-width has-padding has-border" id="signup-username" type="text" placeholder="使用者名稱" name="name" value="123">

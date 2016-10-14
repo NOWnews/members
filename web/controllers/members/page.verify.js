@@ -1,5 +1,21 @@
 
+import co from 'co';
+import postApi from '../../util/postApi';
+
 module.exports = (req, res, next) => {
-    console.log(req.query.verify);
-    return res.render('members/verify');
+    let token = req.query.token;
+
+    co(function*(){
+        let tokenCheck = yield postApi('api/verify/check', {token: token});
+
+        if (tokenCheck.type === 'error') {
+            // return res.send(`error code: ${tokenCheck.message}`);
+            return res.render('members/verifyFail', {
+                tokenCheck: tokenCheck,
+                verifyResetUrl: '/members/verify',
+            });
+            // return res.send('申請帳戶的 toekn 已經失效');
+        }
+        return res.render('members/verifySuccess');
+    }).catch(next);
 };

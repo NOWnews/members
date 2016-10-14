@@ -6,6 +6,7 @@ import pageSignin from './page.signin';
 import pageVerify from './page.verify';
 import actionSignin from './action.signin';
 import actionSignup from './action.signup';
+import actionResetVerify from './action.resetVerify';
 
 router.route('/sign')
     .get(pageSign);
@@ -17,6 +18,7 @@ router.route('/signin')
     .post(actionSignin);
 
 router.route('/verify')
-    .get(pageVerify);
+    .get(pageVerify)
+    .post(actionResetVerify);
 
 module.exports = router;
