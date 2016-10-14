@@ -65,8 +65,7 @@ module.exports = (req, res, next) => {
         // 讀取會員認證信的樣板
         let html = nunjucks.render('./mailTemplates/resetPassword.html', {
             expireTime: moment(expireTime).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss'),
-            verifiedLink: `http://m.nownews.com?token=${resetPasswordRequest.token}`,
-            url: `${config[env].web.url}`
+            verifiedLink: `${config[env].web.url}/members/password?token=${resetPasswordRequest.token}`
         });
 
         // 非同步送出會員認證信

@@ -60,7 +60,9 @@ module.exports = (req, res, next) => {
         ];
 
         // 讀取會員認證信的樣板
-        let html = nunjucks.render('./mailTemplates/updatePasswordSuccess.html');
+        let html = nunjucks.render('./mailTemplates/updatePasswordSuccess.html', {
+            name: member.name
+        });
 
         // 非同步送出會員認證信
         mailer({

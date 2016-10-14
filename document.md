@@ -100,7 +100,7 @@ None
 }
 ```
 
-### `POST` /api/verify/check
+### `POST` /api/verify/confirm
 
 驗證帳戶
 

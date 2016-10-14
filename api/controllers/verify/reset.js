@@ -56,8 +56,7 @@ module.exports = (req, res, next) => {
         // 讀取會員認證信的樣板
         let html = nunjucks.render('./mailTemplates/resetVerify.html', {
             expireTime: moment(expireTime).tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss'),
-            verifiedLink: `http://m.nownews.com?verify=${nweVerifyInfo.token}`,
-            url: `${config[env].web.url}`
+            verifiedLink: `${config[env].web.url}/members/verify?token=${nweVerifyInfo.token}`
         });
 
         // 非同步送出會員認證信
