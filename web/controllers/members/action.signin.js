@@ -9,7 +9,8 @@ module.exports = (req, res, next) => {
         let members = yield postApi('api/members/signin', body);
         console.log(members,'會員資訊console');
         if (members.type === 'error') {
-            return res.send(`error code ${members.message}`);
+            return res.render('error/10000');
+            // return res.send(`error code ${members.message}`);
         }
 
         // return res.render('member/signin');
