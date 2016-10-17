@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
         let tokenCheck = yield postApi('api/password/check', {token: token});
 
         if (tokenCheck.type === 'error') {
-            return res.render(`error/${tokenCheck.message}.html`);
+            return res.redirect(`/error/page/${tokenCheck.message}`);
             // return res.render('members/verifyFail', {
             //     tokenCheck: tokenCheck,
             //     verifyResetUrl: '/members/verify',
