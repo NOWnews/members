@@ -3,12 +3,11 @@ import co from 'co';
 import postApi from '../../util/postApi';
 
 module.exports = (req, res, next) => {
-    let body = req.body;
-
+    let email = req.body.email;
     co(function*(){
-        let members = yield postApi('api/members/signup', body);
-        if (members.type === 'error') {
-            return res.send(`/error/page/${members.message}`);
+        let verify = yield postApi('api/verify/reset', { email: email});
+        if (verify.type === 'error') {
+            return res.send(`/error/page/${verify.message}`);
         }
         return res.render('members/signupSuccess');
     }).catch(next);

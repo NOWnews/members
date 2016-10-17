@@ -1,0 +1,11 @@
+{% extends "../base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block container %}
+    <h1>驗證失敗 error code: {{ tokenCheck.message }}</h1>
+    <form action="{{ verifyResetUrl }}" method="post">
+        請輸入 Email <input name="email" type="email">
+    </form>
+{% endblock %}

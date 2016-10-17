@@ -1,4 +1,4 @@
 
 module.exports = (req, res, next) => {
-    return res.render('members/signin');
+    return res.render('error/10000.html');
 };

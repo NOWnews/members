@@ -1,8 +1,10 @@
 
+import express from 'express';
 import compression from 'compression';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import nunjucks from 'nunjucks';
+import cookieSession from 'cookie-session';
 
 module.exports = (app) => {
 
@@ -18,6 +20,16 @@ module.exports = (app) => {
         express: app,
         watch: true
     });
+
+    // Session 的設定
+    app.set('trust proxy', 1);
+    app.use(cookieSession({
+        name: 'member',
+        keys: ['NOWmember', 'member']
+    }));
+
+    // 靜態檔案位置
+    app.use('/static', express.static(rootPath + '/web/public/'));
 
     return (req, res, next) => {
         return next();

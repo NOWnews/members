@@ -6,8 +6,11 @@ module.exports = (req, res, next) => {
     let body = req.body;
 
     co(function*(){
-        let member = yield postApi('members/signin', body);
-
-        return res.render('member/signin');
+        let members = yield postApi('api/members/signin', body);
+        console.log(members,'會員資訊console');
+        if (members.type === 'error') {
+            return res.render(`/error/page/${members.message}`);
+        }
+        return res.send(`登入成功 ${members.email}`);
     }).catch(next);
 };
