@@ -119,10 +119,10 @@
         <div id="cd-reset-password"> <!-- reset password form  Lost your password? Please enter your email address. You will receive a link to create a new password.-->
             <p class="cd-form-message">忘記密碼？輸入您的Email。您將會收到重設密碼相關信件</p>
 
-            <form class="cd-form" action="/" method="post">
+            <form class="cd-form" action="{{ passwordResetUrl }}" method="post">
                 <p class="fieldset">
                     <label class="image-replace cd-email" for="reset-email">E-mail</label>
-                    <input class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
+                    <input name="email" class="full-width has-padding has-border" id="reset-email" type="email" placeholder="E-mail">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
