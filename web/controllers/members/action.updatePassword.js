@@ -14,7 +14,7 @@ module.exports = (req, res, next) => {
             confirmNewPassword: confirmNewPassword
         });
         if (password.type === 'error') {
-            return res.send(`error/${password.message}.html`);
+            return res.redirect(`/error/page/${password.message}`);
         }
         return res.render('members/passwordUpdateSuccess');
     }).catch(next);
