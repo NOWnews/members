@@ -11,7 +11,7 @@ module.exports = {
     },
     staging: {
         mongodb: {
-            host: 'mongodb://localhost:27017',
+            host: 'mongodb://192.168.40.68:27017',
             db: 'members_staging'
         },
         web: {
@@ -20,7 +20,7 @@ module.exports = {
     },
     production: {
         mongodb: {
-            host: 'mongodb://localhost:27017',
+            host: 'mongodb://192.168.40.68:27017',
             db: 'members_production'
         },
         web: {
