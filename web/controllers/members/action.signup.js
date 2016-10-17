@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
     co(function*(){
         let members = yield postApi('api/members/signup', body);
         if (members.type === 'error') {
-            return res.send(`error code: ${members.message}`);
+            return res.send(`error/${members.message}.html`);
         }
         return res.render('members/signupSuccess');
     }).catch(next);
