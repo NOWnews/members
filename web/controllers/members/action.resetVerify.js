@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     co(function*(){
         let verify = yield postApi('api/verify/reset', { email: email});
         if (verify.type === 'error') {
-            return res.send(`error code: ${verify.message}`);
+            return res.send(`error/${verify.message}.html`);
         }
         return res.render('members/signupSuccess');
     }).catch(next);

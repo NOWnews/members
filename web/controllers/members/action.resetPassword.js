@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
     co(function*(){
         let password = yield postApi('api/password/reset', { email: email});
         if (password.type === 'error') {
-            return res.send(`error code: ${password.message}`);
+            return res.render(`error/${password.message}.html`);
         }
         return res.render('members/passwordResetSuccess');
     }).catch(next);
