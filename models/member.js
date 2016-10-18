@@ -1,7 +1,14 @@
 
 import mongoose, { Schema } from 'mongoose';
+import autoIncrement from 'mongoose-auto-increment';
 
 const schema = new Schema({
+
+    memberId: {
+        type: Number,
+        required: true,
+        uniq: true
+    },
 
     name: {
         type: String,
@@ -57,6 +64,14 @@ const schema = new Schema({
     timestamps: {
         updatedAt: 'updatedAt'
     }
+});
+
+schema.index({ memberId: 1}, { sparse: true });
+
+schema.plugin(autoIncrement.plugin, {
+    model: 'member',
+    field: 'memberId',
+    startAt: 1
 });
 
 module.exports = mongoose.model('member', schema);

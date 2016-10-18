@@ -8,7 +8,7 @@ import co from 'co';
 import nunjucks from 'nunjucks';
 
 import { mailer } from '../../../libs';
-import { Member, Verify } from '../../../models';
+import { Member, Verify, Service } from '../../../models';
 
 module.exports = (req, res, next) => {
 
@@ -16,6 +16,7 @@ module.exports = (req, res, next) => {
 
     co(function*() {
 
+        // 取得認證資料
         let verifyInfo = yield Verify.findOne()
             .where('token').equals(token)
             .where('expireTime').gt(Date.now())
@@ -28,6 +29,7 @@ module.exports = (req, res, next) => {
 
         let { email } = verifyInfo;
 
+        // 取得會員資料
         let member = yield Member.findOne()
             .where('email').equals(email)
             .where('trashed').equals(false)
@@ -37,13 +39,18 @@ module.exports = (req, res, next) => {
             return Promise.reject(new Error(10000));
         }
 
+        // 變更對應欄位
         verifyInfo.set('status', 'USED');
         verifyInfo.set('trashed', true);
         member.set('status', 'VERIFIED');
 
         let results = yield [
             verifyInfo.saveAsync(),
-            member.saveAsync()
+            member.saveAsync(),
+            Service.createAsync({
+                member: member._id,
+                service: 'NOWnews'
+            })
         ];
 
         // 讀取會員認證信的樣板

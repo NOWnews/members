@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
 import mongoose from 'mongoose';
 import chalk from 'chalk';
+import autoIncrement from 'mongoose-auto-increment';
 
 const config = require('../config')[`${process.env.NODE_ENV}`];
 
@@ -13,12 +14,11 @@ mongoose.connectAsync(`${config.mongodb.host}/${config.mongodb.db}`);
 const connection = mongoose.connection;
 console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mongodb.db}`));
 
-import member from './member';
-import verify from './verify';
-import resetPassword from './resetPassword';
+autoIncrement.initialize(connection);
 
 module.exports = {
-    Member: member,
-    Verify: verify,
-    ResetPassword: resetPassword
+    Member: require('./member'),
+    Verify: require('./verify'),
+    ResetPassword: require('./resetPassword'),
+    Service: require('./service')
 };
