@@ -1,4 +1,5 @@
 module.exports = {
+    rootPath: __dirname,
     env: process.env.NODE_ENV || 'dev',
     dev: {
         mongodb: {
@@ -8,6 +9,9 @@ module.exports = {
         web: {
             url: 'http://localhost:7777'
         },
+        api: {
+            url: 'http://localhost:8888'
+        }
     },
     staging: {
         mongodb: {
@@ -16,6 +20,9 @@ module.exports = {
         },
         web: {
             url: 'http://member.nownews.com'
+        },
+        api: {
+            url: 'http://member.nownews.com:8888'
         }
     },
     production: {
@@ -25,6 +32,9 @@ module.exports = {
         },
         web: {
             url: 'http://member.nownews.com'
+        },
+        api: {
+            url: 'http://member.nownews.com:8888'
         }
     }
 };

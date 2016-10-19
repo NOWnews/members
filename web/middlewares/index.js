@@ -6,6 +6,8 @@ import bodyParser from 'body-parser';
 import nunjucks from 'nunjucks';
 import cookieSession from 'cookie-session';
 
+const config = require('../../config');
+
 module.exports = (app) => {
 
     app.use(compression());
@@ -15,7 +17,7 @@ module.exports = (app) => {
 
     // view engine 設定與 views 擺放位置設定
     app.set('view engine', 'html');
-    nunjucks.configure( `${rootPath}/web/views/`, {
+    nunjucks.configure( `${config.rootPath}/web/views/`, {
         autoescape: true,
         express: app,
         watch: true
@@ -29,7 +31,7 @@ module.exports = (app) => {
     }));
 
     // 靜態檔案位置
-    app.use('/static', express.static(rootPath + '/web/public/'));
+    app.use('/static', express.static(`${config.rootPath}/web/public/`));
 
     return (req, res, next) => {
         return next();

@@ -1,6 +1,5 @@
 require('babel-core/register');
 require('babel-polyfill');
-require('../global.js');
 
 const chalk = require('chalk');
 const http = require('http');
