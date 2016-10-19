@@ -5,12 +5,13 @@
 <script src="http://s.codepen.io/assets/libs/modernizr.js" type="text/javascript"></script>
 
 <link href='http://fonts.googleapis.com/css?family=PT+Sans:400,700' rel='stylesheet' type='text/css'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://s3-us-west-2.amazonaws.com/s.cdpn.io/148866/reset.css">
 <link rel="stylesheet" href="/static/source/css/sign.css">
 {% endblock %}
 {% block container %}
 <header role="banner">
-    <div id="cd-logo"><a href="#0"><img src="http://m.nownews.com/static/img/mobile-logo.png" alt="Logo"></a></div>
+    <div id="cd-logo"><a href="/"><img src="http://m.nownews.com/static/img/mobile-logo.png" alt="Logo"></a></div>
 
     <nav class="main-nav">
         <ul>
@@ -72,19 +73,13 @@
                 </p>
 
                 <p class="fieldset">
-                    <label class="image-replace cd-phone" for="signup-phone">Phone</label>
-                    <input class="full-width has-padding has-border" id="signup-phone" type="text" placeholder="電話" name="phone" value="0912345678">
-                    <span class="cd-error-message">Error message here!</span>
-                </p>
-
-                <p class="fieldset">
-                    <label class="image-replace cd-birthday" for="signup-birthday">出生年月日</label>
+                    <i class="fa fa-birthday-cake" aria-hidden="true" style="display: inline-block;position: absolute;left: 15px;top: 30%;bottom: auto;color:#c2c2c2"></i><!-- <label class="image-replace cd-birthday" for="signup-birthday">出生年月日</label> -->
                     <input class="full-width has-padding has-border" id="signup-birthday" type="text" placeholder="出生年月日" name="birthday" value="1987-10-10">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
 
                 <p class="fieldset">
-                    <label class="image-replace cd-gender" for="signup-gender">性別</label>
+                    <i class="fa fa-transgender" aria-hidden="true" style="display: inline-block;position: absolute;left: 15px;top: 30%;bottom: auto;color:#c2c2c2"></i><!-- <label class="image-replace cd-gender" for="signup-gender">性別</label> -->
                     <input class="full-width has-padding has-border" id="signup-gender" type="text" placeholder="性別" name="gender" value="男">
                     <span class="cd-error-message">Error message here!</span>
                 </p>
@@ -105,7 +100,7 @@
 
                 <p class="fieldset">
                     <input type="checkbox" id="accept-terms">
-                    <label for="accept-terms">我同意 <a href="#0">最終用戶授權協議</a></label>
+                    <label for="accept-terms">本人已詳閱並同意 <a href="#0">NOWnews服務條款和隱私權</a></label>
                 </p>
 
                 <p class="fieldset">
