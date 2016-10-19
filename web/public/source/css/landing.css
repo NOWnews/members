@@ -39,7 +39,7 @@ img{
     letter-spacing:1px;
 }
 a.app-btn{
-    color:#FFF;
+    color:#333;
 }
 .app-btn{
     position:relative;
@@ -55,7 +55,7 @@ a.app-btn{
     -moz-transition:all .3s ease;
     transition:all .3s ease;
     top:0;
-    border:solid 2px #FFF;
+    border:solid 2px #333;
 }
 .app-btn:hover{
     background:#FFF;
@@ -185,16 +185,17 @@ body.loaded #preloader{
     font-weight:300;
     color:#FFF;
     line-height:1.2em;
-    font-size:56px;
+    font-size:48px;
     letter-spacing:2px;
     margin-top:0;
     margin-bottom:25px;
+    color:#333;
 }
 .intro-text > p{
     font-size:22px;
     margin:0;
     margin-bottom:50px;
-    color:#FFF;
+    color:#333;
     font-style:italic;
     letter-spacing:2px;
 }
@@ -912,15 +913,15 @@ footer p{
     text-transform:uppercase;
     letter-spacing:2px;
     font-size:12px;
-    color:#FFF;
-    color:rgba(255,255,255,.6);
+    color:#000;
+    color:rgba(95,95,95,.6);
     -webkit-transition:all .3s ease;
     -moz-transition:all .3s ease;
     transition:all .3s ease;
 }
 .navbar-nav > li.active > a,
 .navbar-nav > li > a:hover{
-    color:#FFF;
+    color:#000;
 }
 .navbar-toggle{
     margin-top:5.5px;

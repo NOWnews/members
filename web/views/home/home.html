@@ -17,7 +17,7 @@
         <meta name="msapplication-tap-highlight" content="no"/>
 
 
-        <title>San - Responsive App Landing Page</title>
+        <title>會員中心 | NOWnews今日新聞</title>
 
 
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
@@ -42,13 +42,13 @@
     <body>
 
 
-        <div id='preloader' >
+        <!-- <div id='preloader' >
 
             <div class='loader' >
                 <img src='http://m.nownews.com/static/img/loading.gif' alt>
             </div>
 
-        </div>
+        </div> -->
 
         <nav class='navbar navbar-fixed-top' >
 
@@ -67,8 +67,8 @@
 
 
                     <a href='#' class='navbar-brand' >
-                        <img class='logo-light' src='img/logo.png' alt>
-                        <img class='logo-dark' src='img/logo-dark.png' alt>
+                        <img class='logo-light' src='http://www.nownews.com/assets/images/logo.png' alt>
+                        <img class='logo-dark' src='http://www.nownews.com/assets/images/logo.png' alt>
                     </a>
 
                 </div>
@@ -84,15 +84,15 @@
                         </li>
 
                         <li>
-                            <a href='#features-1' data-scroll>Features</a>
+                            <a href='#features-1' data-scroll>Mobile</a>
                         </li>
 
                         <li>
-                            <a href='#screenshots' data-scroll>截圖</a>
+                            <a href='#features-2' data-scroll>APP</a>
                         </li>
 
                         <li>
-                            <a href='#pricing' data-scroll>價錢</a>
+                            <a href='#features-3' data-scroll>WHY JOIN US</a>
                         </li>
 
                         <li>
@@ -100,10 +100,11 @@
                         </li>
 
                         <li>
-                            <a href='#contact' data-scroll>聯絡我們</a>
+                            <a href="#sign" data-scroll>註冊/登入</a>
                         </li>
 
                     </ul>
+
 
                 </div>
 
@@ -114,27 +115,27 @@
         <section id='intro' class='main-section parallax' data-parallax='scroll' data-image-src='img/bg-main.jpg' >
 
             <!--Video Background-->
-            <a id='bgndVideo' class='player' data-property="{videoURL:'https://www.youtube.com/watch?v=qIgiS8VKXG8',containment:'#intro',showControls: false,autoPlay:true, mute:true, startAt:0, opacity:1}">My video</a>
+            <a id='bgndVideo' class='player' data-property="{videoURL:'https://www.youtube.com/watch?v=67mpo0v6XLc',containment:'#intro',showControls: false,autoPlay:true, mute:true, startAt:0, opacity:0.3}">My video</a>
 
             <div class='container' >
 
 
                 <div class='row' >
 
-                    <div class='col-md-6' >
+                    <div class='col-md-8' >
 
                         <div class='intro-text' >
 
-                            <h1 class='wow fadeInUp' data-wow-delay='.2s' >
-                                華人最專業-海票新聞
+                            <h1 class='wow fadeInUp' data-wow-delay='.2s'>
+                                NOWnews 華人最專業新聞
                             </h1>
 
-                            <p class='font-alt wow fadeInUp' data-wow-delay='.4s' >With this amazing template</p>
+                            <p class='font-alt wow fadeInUp' data-wow-delay='.4s' >《 年輕、公義、真相 》</p>
 
 
                             <div class='btns' >
 
-                                <a href='#' class='app-btn wow bounceIn' data-wow-delay='.6s' >
+                                <a href='http://localhost:7777/members/sign' class='app-btn wow bounceIn' data-wow-delay='.6s' >
                                     <i class='ion-social-apple' ></i>
                                     前往註冊
                                 </a>
@@ -153,14 +154,14 @@
 
                     </div>
 
-                    <div class='col-md-6' >
+                    <!-- <div class='col-md-6' >
 
                         <div class='mockup' >
                             <img src='img/mockup1-front.png' class='front wow fadeInDown' data-wow-duration='.7s' data-wow-delay='1.6s' alt>
                             <img src='img/mockup1-back.png' class='back wow fadeInDown' data-wow-duration='.7s' data-wow-delay='1.3s' alt>
                         </div>
 
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -182,9 +183,9 @@
 
                             <img class='phone wow fadeInUp' data-wow-duration='.8s' data-wow-delay='.2s' src='img/mockup2-phone.png' alt>
 
-                            <img class='screen wow fadeIn' data-wow-delay='1s' src='img/mockup2-screen1.png' alt>
-                            <img class='screen wow fadeIn' data-wow-delay='1.4s' src='img/mockup2-screen2.png' alt>
-                            <img class='screen wow fadeIn' data-wow-delay='1.8s' src='img/mockup2-screen3.png' alt>
+                            <img class='screen wow fadeIn' data-wow-delay='1s' src='http://localhost:7777/static/source/img/mockup2-screen5.png' alt>
+                            <img class='screen wow fadeIn' data-wow-delay='1.4s' src='http://localhost:7777/static/source/img/mockup2-screen6.png' alt>
+                            <img class='screen wow fadeIn' data-wow-delay='1.8s' src='http://localhost:7777/static/source/img/mockup2-screen4.png' alt>
 
                         </div>
 
@@ -194,15 +195,16 @@
 
                         <div class='mockup-text' >
 
-                            <span class='font-alt wow fadeInUp' data-wow-delay='.2s' >Elegant & </span>
-                            <h2 class='wow fadeInUp' data-wow-delay='.4s' >Perfect Design</h2>
+                            <!-- <span class='font-alt wow fadeInUp' data-wow-delay='.2s' >Elegant & </span> -->
+                            <h2 class='wow fadeInUp' data-wow-delay='.4s' ><a href="http://m.nownews.com">Mobile Web</a></h2>
 
                             <p class='wow fadeInUp' data-wow-delay='.6s' >
-                                Te sea deleniti suscipiantur deterruisset, eu quis detracto sapientem mea. An purto dicunt deserunt vix, eam te iudico tritani. Dicunt iriure ex sed, ex wisi timeam deterruisset vim
+                                最人性化、高效能手機版服務，我們從經驗中知道，有一些想法雖然在在紙面上很好看，但實際進行後的結果並非如此。我們豐富的經驗可以幫助我們避免掉入這些陷阱，並在整個過程中以迭代的方式進行開發工程。
+
                             </p>
 
-                            <a href='#' class='btn-custom arrow-btn wow fadeInUp' data-wow-delay='.8s' >
-                                Learn More
+                            <a href='http://localhost:7777/members/sign' class='btn-custom arrow-btn wow fadeInUp' data-wow-delay='.8s' >
+                                加入我們
                                 <span class='arrow' ></span>
                             </a>
 
@@ -238,15 +240,15 @@
 
                         <div class='mockup-text' >
 
-                            <span class='font-alt wow fadeInUp' data-wow-delay='.2s' >Powerful & </span>
-                            <h2 class='wow fadeInUp' data-wow-delay='.4s' >Unique Template</h2>
+                            <!-- <span class='font-alt wow fadeInUp' data-wow-delay='.2s' >Powerful & </span> -->
+                            <h2 class='wow fadeInUp' data-wow-delay='.4s' >APP</h2>
 
                             <p class='wow fadeInUp' data-wow-delay='.6s' >
-                                Te sea deleniti suscipiantur deterruisset, eu quis detracto sapientem mea. An purto dicunt deserunt vix, eam te iudico tritani. Dicunt iriure ex sed, ex wisi timeam deterruisset vim
+                                原生 APP 能與使用者有更多的互動，並且支援原生 IOS, Android 相關功能，推播更能夠讓您瞭解這世界上每分每秒發生的大事件
                             </p>
 
-                            <a href='#' class='btn-custom arrow-btn wow fadeInUp' data-wow-delay='.8s' >
-                                Learn More
+                            <a href='http://localhost:7777/members/sign' class='btn-custom arrow-btn wow fadeInUp' data-wow-delay='.8s' >
+                                加入我們
                                 <span class='arrow' ></span>
                             </a>
 
@@ -267,9 +269,9 @@
 
                 <div class='section-header text-center' >
 
-                    <h2 class='wow fadeInUp' data-wow-delay='.2s' >Features</h2>
+                    <h2 class='wow fadeInUp' data-wow-delay='.2s' >WHY JOIN US</h2>
 
-                    <p class='wow fadeInUp' data-wow-delay='.4s' >We've got a lot of amaing and cool features</p>
+                    <p class='wow fadeInUp' data-wow-delay='.4s' ></p>
 
                 </div>
 
@@ -281,17 +283,17 @@
 
                             <div class='col-feature wow fadeInLeft' data-wow-delay='.2s' >
                                 <i class='icon-basic-heart' ></i>
-                                <h4>Made with Love</h4>
+                                <h4>更快速</h4>
                                 <p>
-                                    Te sea niti suscipiantur deterruisset, eu quis detracto ientem mea. An purto dicunt deserunt vix, eam te iudico Dicunt ex sed, ex wisi
+                                    NOWnews 服務講求效能，讓使用者有快速方便的體驗
                                 </p>
                             </div>
 
                             <div class='col-feature wow fadeInLeft' data-wow-delay='.4s' >
                                 <i class='icon-basic-paperplane' ></i>
-                                <h4>Send Messages</h4>
+                                <h4>更即時</h4>
                                 <p>
-                                    Te sea niti suscipiantur deterruisset, eu quis detracto ientem mea. An purto dicunt deserunt vix, eam te iudico Dicunt ex sed, ex wisi
+                                    即時推播讓您快速知道世界上發生的大小事
                                 </p>
                             </div>
 
@@ -311,17 +313,17 @@
 
                             <div class='col-feature wow fadeInRight' data-wow-delay='.2s' >
                                 <i class='icon-basic-bolt' ></i>
-                                <h4>Powerful</h4>
+                                <h4>人性化</h4>
                                 <p>
-                                    Te sea niti suscipiantur deterruisset, eu quis detracto ientem mea. An purto dicunt deserunt vix, eam te iudico Dicunt ex sed, ex wisi
+                                    我們的設計貼近使用者的習慣與行為，操作介面人性化，讓您不管使用 app 還是 web 都有一致性的體驗
                                 </p>
                             </div>
 
                             <div class='col-feature wow fadeInRight' data-wow-delay='.4s' >
                                 <i class='icon-ecommerce-wallet' ></i>
-                                <h4>Save Money</h4>
+                                <h4>更安全</h4>
                                 <p>
-                                    Te sea niti suscipiantur deterruisset, eu quis detracto ientem mea. An purto dicunt deserunt vix, eam te iudico Dicunt ex sed, ex wisi
+                                    對於所有會員的資料我們保證不外洩，不透露，讓您註冊的安心，保護您的個人資料是我們的責任。
                                 </p>
                             </div>
 
@@ -335,7 +337,7 @@
 
         </section>
 
-        <section id='screenshots' class='screenshots-section' >
+        <!-- <section id='screenshots' class='screenshots-section' >
 
             <div class='container' >
 
@@ -421,9 +423,9 @@
 
             </div>
 
-        </section>
+        </section> -->
 
-        <section id='video' class='video-section parallax' data-parallax='scroll' data-image-src='img/bg-mockup.jpg' >
+        <!-- <section id='video' class='video-section parallax' data-parallax='scroll' data-image-src='img/bg-mockup.jpg' >
 
             <div class='container' >
 
@@ -452,7 +454,7 @@
 
                 </div>
 
-            </div>
+            </div> -->
 
 
 
@@ -460,7 +462,7 @@
 
         </section>
 
-        <section id='features-4' class='features-2-section' >
+<!--         <section id='features-4' class='features-2-section' >
 
             <div class='container' >
 
@@ -484,7 +486,7 @@
 
                             <div class='content' >
 
-                                <h4>Made with Love</h4>
+                                <h4>更人性</h4>
 
                                 <p>
 
@@ -560,7 +562,7 @@
 
                             <div class='content' >
 
-                                <h4>Save Money</h4>
+                                <h4>更安全</h4>
 
                                 <p>
 
@@ -634,9 +636,9 @@
 
             </div>
 
-        </section>
+        </section> -->
 
-        <section id='pricing' class='pricing-section' >
+        <!-- <section id='pricing' class='pricing-section' >
 
             <div class='container' >
 
@@ -756,9 +758,9 @@
 
             </div>
 
-        </section>
+        </section> -->
 
-        <section id='testimonials' class='testimonials-section' >
+        <!-- <section id='testimonials' class='testimonials-section' >
             <div class='container' >
 
                 <div class='testimonials-slider wow fadeInUp' data-wow-delay='.2s' >
@@ -777,10 +779,8 @@
 
                         <div class='author' >
 
-                            <!-- Author Image -->
                             <img class='author-img' src='img/people1.jpg' alt>
 
-                            <!-- Signature -->
                             <img class='signature' src='img/signature.png' alt>
 
                             <h4>John Doe</h4>
@@ -806,10 +806,8 @@
 
                         <div class='author' >
 
-                            <!-- Author Image -->
                             <img class='author-img' src='img/people2.jpg' alt>
 
-                            <!-- Signature -->
                             <img class='signature' src='img/signature.png' alt>
 
                             <h4>John Doe</h4>
@@ -835,10 +833,8 @@
 
                         <div class='author' >
 
-                            <!-- Author Image -->
                             <img class='author-img' src='img/people3.jpg' alt>
 
-                            <!-- Signature -->
                             <img class='signature' src='img/signature.png' alt>
 
                             <h4>John Doe</h4>
@@ -864,10 +860,8 @@
 
                         <div class='author' >
 
-                            <!-- Author Image -->
                             <img class='author-img' src='img/people4.jpg' alt>
 
-                            <!-- Signature -->
                             <img class='signature' src='img/signature.png' alt>
 
                             <h4>John Doe</h4>
@@ -882,7 +876,7 @@
                 </div>
 
             </div>
-        </section>
+        </section> -->
 
         <section id='download' class='cta-section parallax' data-parallax='scroll' data-image-src='img/bg.jpg' >
 
@@ -911,7 +905,7 @@
                 </div>
 
 
-                <div class='newsletter' >
+               <!--  <div class='newsletter' >
 
                     <h4 class='wow fadeInUp' data-wow-delay='.2s' >Stay Updated</h4>
 
@@ -939,14 +933,14 @@
 
                     </div>
 
-                </div>
+                </div> -->
 
 
             </div>
 
         </section>
 
-        <section id='contact' class='contact-section' >
+        <!-- <section id='contact' class='contact-section' >
 
             <div class='container' >
 
@@ -1016,7 +1010,7 @@
 
             </div>
 
-        </section>
+        </section> -->
 
         <footer>
             <div class='container' >
@@ -1071,19 +1065,20 @@
         <script src="http://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
         <!--<script src='js/jquery.min.js' ></script>-->
 
-        <script src='bootstrap/js/bootstrap.min.js' ></script>
-        <script src=""></script>
-        <script src='js/jquery.magnific-popup.min.js' ></script>
-        <script src='js/jquery.ajaxchimp.min.js' ></script>
-        <script src='js/jquery.mb.YTPlayer.min.js' ></script>
-        <script src='js/parallax.min.js' ></script>
-        <script src='js/particles.min.js' ></script>
+        <script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js' ></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js' ></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery.mb.YTPlayer/3.0.8/jquery.mb.YTPlayer.min.js' ></script>
+        <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery-parallax/1.1.3/jquery-parallax-min.js' ></script>-->
+        <!--<script src='js/parallax.min.js' ></script>-->
+        <!--<script src='js/particles.min.js' ></script>-->
         <script src='js/waves.min.js' ></script>
         <script src='js/owl.carousel.min.js' ></script>
-        <script src='js/wow.min.js' ></script>
-        <script src='js/validator.min.js' ></script>
-        <script src='js/smooth-scroll.min.js' ></script>
-        <script src='js/script.js' ></script>
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js' ></script>
+        <!--<script src='https://cdnjs.cloudflare.com/ajax/libs/validator/6.1.0/validator.min.js' ></script>-->
+        <script src='https://cdnjs.cloudflare.com/ajax/libs/smooth-scroll/5.2.0/js/smooth-scroll.min.js' ></script>
+        <!--<script src='js/smooth-scroll.min.js' ></script>-->
+
+        <script src='http://localhost:7777/static/source/js/landing.js' ></script>
 
         <script>
             /*=========================================================================
