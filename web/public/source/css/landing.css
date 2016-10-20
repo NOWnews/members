@@ -178,9 +178,9 @@ body.loaded #preloader{
     z-index:2;
 }
 .intro-text{
-    padding-top:120px;
-    padding-bottom:105px;
+    padding-top:240px;
 }
+
 .intro-text > h1{
     font-weight:300;
     color:#FFF;
@@ -200,8 +200,8 @@ body.loaded #preloader{
     letter-spacing:2px;
 }
 .intro-text > .btns{
-    margin-top:30px;
-    margin-left:-10px;
+    margin: 0 auto;
+    text-align: center;
 }
 .intro-text .app-btn{
     margin:0 10px;
