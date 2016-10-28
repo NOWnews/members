@@ -43,7 +43,7 @@ module.exports = (req, res, next) => {
         }
 
         if(!verifyInfo) {
-            return Promise.reject(new Error(10007));
+            return Promise.reject(new Error(10000));
         }
 
         let expireTime = moment(Date.now()).add(3, 'day');
