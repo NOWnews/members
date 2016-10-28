@@ -16,16 +16,21 @@
 <div class="acd-user-modal is-visible">
     <div class="cd-user-modal-container"> <!-- this is the container wrapper -->
         <div class="cd-form">
-            <p class="fieldset">
-            驗證成功
-            <br>
-            <br>
-            如帳戶有其他疑問，請寄信至 <a href="mailto:xxxxx@nownews.com">xxxxx@nownews.com</a>
-            </p>
-            <p class="fieldset">
-                <a href="/members/sign"><input class="full-width" type="submit" value="返回登入頁面"></a>
-            </p>
-            </p>
+
+                <form action="{{ verifyResetUrl }}" method="post">
+                    <p class="fieldset" style="text-align:center">
+                        重新取得驗證信件
+
+                    </p>
+                    <p class="fieldset">
+                        <label class="image-replace cd-email" for="signup-email">E-mail</label>
+                         <input  class="full-width has-padding has-border" placeholder="請輸入您的Email"  name="email" type="email">
+                    </p>
+                    <p class="fieldset">
+                        <input class="full-width has-padding" type="submit" value="送出">
+                    </p>
+                </form>
+
         </div>
 
     </div>

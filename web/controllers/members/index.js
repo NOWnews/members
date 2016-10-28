@@ -5,6 +5,8 @@ import pageSign from './page.sign';
 import pageSignin from './page.signin';
 import pageVerify from './page.verify';
 import pagePassword from './page.password';
+import resetVerify from './page.resetVerify';
+
 import actionSignin from './action.signin';
 import actionSignup from './action.signup';
 import actionResetVerify from './action.resetVerify';
@@ -23,6 +25,9 @@ router.route('/signin')
 router.route('/verify')
     .get(pageVerify)
     .post(actionResetVerify);
+
+router.route('/resetVerify')
+    .get(resetVerify);
 
 router.route('/password')
     .get(pagePassword);

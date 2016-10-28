@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
         if (members.type === 'error') {
             return res.redirect(`/error/page/${members.message}`);
         }
-        return res.send(`登入成功 ${members.email}`);
+        // return res.send(`登入成功 ${members.email}`);
+        return res.render('members/loginSuccess', { email: members.email });
     }).catch(next);
 };

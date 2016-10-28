@@ -128,6 +128,19 @@ jQuery(document).ready(function($) {
             })
         });
     }
+    $form_signup.submit(function(){
+        // $('#accept-terms')
+        if ($('#accept-terms').prop("checked")) {
+          console.log('被點了')
+
+      } else {
+          event.preventDefault();
+          // alert("請勾選")
+          swal("您尚未詳閱並同意NOWnews服務條款和隱私權");
+
+          console.log('沒點了')
+      }
+    });
 });
 
 //credits http://css-tricks.com/snippets/jquery/move-cursor-to-end-of-textarea-or-input/
