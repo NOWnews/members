@@ -10,12 +10,10 @@ module.exports = (req, res, next) => {
 
         if (tokenCheck.type === 'error') {
             return res.redirect(`/error/page/${tokenCheck.message}`);
-            // return res.render('members/verifyFail', {
-            //     tokenCheck: tokenCheck,
-            //     verifyResetUrl: '/members/verify',
-            // });
-            // return res.send('申請帳戶的 toekn 已經失效');
         }
-        return res.render('members/verifySuccess');
+
+        return res.render('members/verifySuccess', {
+            email: tokenCheck.email
+        });
     }).catch(next);
 };
