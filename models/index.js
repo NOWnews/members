@@ -10,6 +10,7 @@ const config = require('../config')[`${process.env.NODE_ENV}`];
  */
 Promise.promisifyAll(mongoose);
 mongoose.Promise = Promise;
+mongoose.set('debug', true)
 mongoose.connectAsync(`${config.mongodb.host}/${config.mongodb.db}`);
 const connection = mongoose.connection;
 console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mongodb.db}`));
@@ -17,8 +18,5 @@ console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mong
 autoIncrement.initialize(connection);
 
 module.exports = {
-    Member: require('./member'),
-    Verify: require('./verify'),
-    ResetPassword: require('./resetPassword'),
-    Service: require('./service')
+    Member: require('./member')
 };

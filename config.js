@@ -11,6 +11,12 @@ module.exports = {
         },
         api: {
             url: 'http://localhost:8888'
+        },
+        redis: {
+            host: "localhost",
+            port: 6379,
+            db: 2,
+            expireSeconds: 3600
         }
     },
     staging: {
@@ -23,6 +29,12 @@ module.exports = {
         },
         api: {
             url: 'http://member.nownews.com:8888'
+        },
+        redis: {
+            host: "localhost",
+            port: 6379,
+            db: 2,
+            expireSeconds: 3600
         }
     },
     production: {
@@ -35,6 +47,12 @@ module.exports = {
         },
         api: {
             url: 'http://member.nownews.com:8888'
+        },
+        redis: {
+            host: "localhost",
+            port: 6379,
+            db: 2,
+            expireSeconds: 3600
         }
     }
 };

@@ -4,7 +4,7 @@ require('babel-polyfill');
 const chalk = require('chalk');
 const http = require('http');
 
-const api = require('../api/app.js');
+const api = require('../app.js');
 
 const env = process.env.NODE_ENV;
 const port = process.env.PORT || '8888';
