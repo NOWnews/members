@@ -71,7 +71,7 @@ describe('Member APIs', () => {
                 })
         });
 
-        it('should signup success with not exist account', async (done) => {
+        it('should signup success with not exist account', (done) => {
             request.post(endPoint)
                 .send(new_member)
                 .end((err, res) => {
@@ -91,7 +91,7 @@ describe('Member APIs', () => {
             done();
         });
 
-        it('should resend email fail with not exist account', async (done) => {
+        it('should resend email fail with not exist account', (done) => {
             request.post(endPoint)
                 .send({ email: fake_member.email })
                 .end((err, res) => {
@@ -100,11 +100,11 @@ describe('Member APIs', () => {
                 });
         });
 
-        it('should resend email fail with actived account', async (done) => {
+        it('should resend email fail with actived account', (done) => {
             done();
         })
 
-        it('should resend email success with exist account which not actived', async (done) => {
+        it('should resend email success with exist account which not actived', (done) => {
             request.post(endPoint)
                 .send({ email: member.email })
                 .end((err, res) => {
@@ -162,7 +162,7 @@ describe('Member APIs', () => {
             done();
         });
 
-        it('should signin fail with incorrect account or password', async (done) => {
+        it('should signin fail with incorrect account or password', (done) => {
             request.post(endPoint)
                 .send({ email: fake_member.email, password: fake_member.password })
                 .end((err, res) => {
@@ -171,7 +171,7 @@ describe('Member APIs', () => {
                 })
         });
 
-        it('should signin fail with not active account', async (done) => {
+        it('should signin fail with not active account', (done) => {
             request.post(endPoint)
                 .send({ email: new_member.email, password: new_member.password })
                 .end((err, res) => {
@@ -180,7 +180,7 @@ describe('Member APIs', () => {
                 })
         });
 
-        it('should signin success with correct account and password', async (done) => {
+        it('should signin success with correct account and password', (done) => {
             request.post(endPoint)
                 .send({ email: member.email, password: member.password })
                 .end((err, res) => {
