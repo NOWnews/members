@@ -3,5 +3,3 @@
 ## API
 
 dev: `npm run api`
-
-## WEB

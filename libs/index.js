@@ -1,8 +1,18 @@
 import nodemailer from 'nodemailer';
 import smtpTransport from 'nodemailer-smtp-transport';
 import Promise from 'bluebird';
+import randToken from 'rand-token';
+import moment from 'moment-timezone';
+
+import redis from '../redis';
 
 module.exports = {
+    genAuthToken: async (email) => {
+        let token = randToken.suid(16);
+        let expireTime = moment().add(3, 'days').tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+        redis.setValue(token, email, 259200);
+        return { token, expireTime };
+    },
     mailer: async (options) => {
         let { from, to, subject, html } = options;
         let transporter = nodemailer.createTransport(smtpTransport({

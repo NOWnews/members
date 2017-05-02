@@ -7,7 +7,7 @@
     "api": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/api.js",
     "web": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/web.js",
     "admin": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/admin.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm install && NODE_ENV=dev mocha --compilers js:babel-core/register ./test/api/member.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +27,7 @@
     "bcrypt": "^1.0.2",
     "bluebird": "^3.4.6",
     "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
     "chalk": "^1.1.3",
     "co": "^4.6.0",
     "compression": "^1.6.2",
@@ -48,5 +49,11 @@
     "pretty-error": "^2.0.1",
     "rand-token": "^0.2.1",
     "redis": "^2.7.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "jsonfile": "^3.0.0",
+    "mocha": "^3.3.0",
+    "superagent": "^3.5.2"
   }
 }

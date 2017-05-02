@@ -1,0 +1,17 @@
+{
+    "member": {
+        "email": "mocha_testing@nownews.com",
+        "password": "1qaz2WSX",
+        "name": "tester"
+    },
+    "new_member": {
+        "email": "weipinyu@nownews.com",
+        "password": "1qaz2WSX",
+        "name": "Cyril"
+    },
+    "fake_member": {
+        "email": "nownews_dev@nownews.com",
+        "password": "1234qazx",
+        "name": "faker"
+    }
+}
