@@ -1,13 +1,13 @@
 {
   "name": "nownembers",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NOWnews 會員系統 Beta",
   "main": "index.js",
   "scripts": {
     "api": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/api.js",
     "web": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/web.js",
     "admin": "npm install && DEBUG=NOWnumbers* NODE_ENV=dev ./node_modules/nodemon/bin/nodemon.js ./bin/admin.js",
-    "test": "npm install && NODE_ENV=dev mocha --compilers js:babel-core/register ./test/api/member.js"
+    "test": "npm install && gulp clean && gulp build && NODE_ENV=dev gulp test"
   },
   "repository": {
     "type": "git",
@@ -51,7 +51,11 @@
     "redis": "^2.7.1"
   },
   "devDependencies": {
+    "del": "^2.2.2",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-mocha": "^4.3.1",
+    "gutil": "^1.6.4",
     "jsonfile": "^3.0.0",
     "mocha": "^3.3.0",
     "superagent": "^3.5.2"

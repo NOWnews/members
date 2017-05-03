@@ -91,7 +91,6 @@ schema.statics.login = function (email, password) {
 }
 
 schema.statics.findByEmail = function (email) {
-    console.log("==============********************")
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
           .then(member => {
