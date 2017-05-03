@@ -22,7 +22,7 @@ router.post('/signup', async (req, res, next) => {
         let { name, email, password } = req.body;
         let member = await Member.findByEmail(email);
         // member shouldn't exist
-        if (member) throw new Error(`${email} is exist`);
+        if (member) throw new Error(11004);
 
         // create new member
         let data = new Member(req.body)
@@ -30,14 +30,12 @@ router.post('/signup', async (req, res, next) => {
 
         // create auth token which expire time as 30 mins later at redis
         let authToken = genAuthToken(newMember.email);
-        newMember.token = authToken;
+        newMember.token = authToken.token;
 
         let html = nunjucks.render('./mailTemplates/confirm.html', {
             expireTime: authToken.expireTime,
             verifiedLink: `${config[env].web.url}/api/auth/active?token=${authToken.token}`
         });
-
-        console.log(html);
 
         mailer({
             subject: '感謝您註冊 NOWnews 會員',
@@ -60,13 +58,9 @@ router.post('/signin', async (req, res, next) => {
 
         let { email, password } = req.body;
         let member = await Member.login(email, password);
-        if (!member) {
-            throw new Error();
-        }
-        if (member.status !== "ACTIVED") {
-            console.log(member.status);
-            throw new Error();
-        }
+        if (!member) throw new Error(10000);
+        if (member.status !== "ACTIVED") throw new Error(10002);
+        
         return res.json(member);
     } catch(err) {
         return next(err);

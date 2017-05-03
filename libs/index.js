@@ -7,7 +7,7 @@ import moment from 'moment-timezone';
 import redis from '../redis';
 
 module.exports = {
-    genAuthToken: async (email) => {
+    genAuthToken: (email) => {
         let token = randToken.suid(16);
         let expireTime = moment().add(3, 'days').tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
         redis.setValue(token, email, 259200);

@@ -78,7 +78,7 @@ schema.statics.login = function (email, password) {
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
             .then(member => {
-                if (!member) reject(`${email} not found`);
+                if (!member) resolve(null);
                 bcrypt.compare(password, member.password, (err, res) => {
                     if (err) reject(err);
                     else resolve(_.pick(member, clientSafeFields))
@@ -91,9 +91,11 @@ schema.statics.login = function (email, password) {
 }
 
 schema.statics.findByEmail = function (email) {
+    console.log("==============********************")
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
           .then(member => {
+              console.log(member);
               if(!member) {
                   resolve(null);
               }

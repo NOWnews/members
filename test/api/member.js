@@ -8,13 +8,13 @@ import Promise from 'bluebird';
 import jsonfile from 'jsonfile';
 import app from '../../app';
 import { Member } from '../../models';
+import errCode from '../../errorHandlers/errCode';
 
 const config = require('../../config')[`${process.env.NODE_ENV}`];
 const initDataPath = './test/config/initdata.json';
 
 const should = chai.should();
 const expect = chai.expect;
-const assert = chai.assert;
 
 const host = process.env.HOST || 'localhost';
 const port = process.env.PORT || '8888';
@@ -31,36 +31,34 @@ const { member, new_member, fake_member } = initData;
 describe('Member APIs', () => {
     // dirty code, need to refactoring
     let token = null;
-    before('Setup', async (done) => {
+    before('Setup', (done) => {
         app.set('port', port);
         server = http.createServer(app);
         server.listen(port);
-        await Member.remove({}, function(err) { 
-            console.log('collection removed') 
+        Member.remove({}, function(err) {
+            if (err) throw err;
+            request.post(`${url}/api/member/signup`)
+                .send(member)
+                .end((err, res) => {
+                    token = res.body.token;
+                    console.log('initialize');
+                    done();
+                })
         });
-        done();
     });
 
-    after('Clean', async (done) => {
-        server.close();
-        done();
+    after('Clean', (done) => {
+        Member.remove({}, function(err) {
+            if (err) throw err;
+            console.log('Finished.');
+            server.close();
+            done();
+        });
+
     });
 
     describe('#Member signup', () => {
         const endPoint = `${url}/api/member/signup`;
-        before('Setup', async (done) => {
-            request.post(endPoint)
-                .send(member)
-                .end((err, res) => {
-                    token = res.body.token.fulfillmentValue.token;
-                    console.log(res.body.token.fulfillmentValue.token);
-                    done();
-                })
-        });
-
-        after('Clean', (done) => {
-            done();
-        });
 
         it('should signup fail with exist account', (done) => {
             request.post(endPoint)
@@ -76,6 +74,8 @@ describe('Member APIs', () => {
                 .send(new_member)
                 .end((err, res) => {
                     should.not.exist(err);
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.have.property('email');
                     done();
                 })
         });
@@ -83,13 +83,6 @@ describe('Member APIs', () => {
 
     describe('#Resend active account email', () => {
         const endPoint = `${url}/api/auth/resend`;
-        before('Setup', async (done) => {
-            done();
-        });
-
-        after('Clean', (done) => {
-            done();
-        });
 
         it('should resend email fail with not exist account', (done) => {
             request.post(endPoint)
@@ -100,15 +93,13 @@ describe('Member APIs', () => {
                 });
         });
 
-        it('should resend email fail with actived account', (done) => {
-            done();
-        })
-
         it('should resend email success with exist account which not actived', (done) => {
             request.post(endPoint)
                 .send({ email: member.email })
                 .end((err, res) => {
                     should.not.exist(err);
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.have.property('email');
                     done();
                 });
         });
@@ -116,19 +107,13 @@ describe('Member APIs', () => {
 
     describe('#Active member account', () => {
         const endPoint = `${url}/api/auth/active`;
-        before('Setup', (done) => {
-            done();
-        });
-
-        after('Clean', (done) => {
-            done();
-        });
 
         it('should active account success with exist account which status is pending', (done) => {
             request.get(endPoint)
                 .query({ token })
                 .end((err, res) => {
                     should.not.exist(err);
+                    expect(res.status).to.equal(200);
                     done();
                 })
         });
@@ -154,13 +139,6 @@ describe('Member APIs', () => {
 
     describe('#Member signin', () => {
         const endPoint = `${url}/api/member/signin`;
-        before('Setup', (done) => {
-            done();
-        });
-
-        after('Clean', (done) => {
-            done();
-        });
 
         it('should signin fail with incorrect account or password', (done) => {
             request.post(endPoint)
@@ -168,7 +146,7 @@ describe('Member APIs', () => {
                 .end((err, res) => {
                     should.exist(err);
                     done();
-                })
+                });
         });
 
         it('should signin fail with not active account', (done) => {
@@ -185,6 +163,8 @@ describe('Member APIs', () => {
                 .send({ email: member.email, password: member.password })
                 .end((err, res) => {
                     should.not.exist(err);
+                    expect(res.status).to.equal(200);
+                    expect(res.body).to.have.property('email');
                     done();
                 })
         });

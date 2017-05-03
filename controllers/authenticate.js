@@ -40,13 +40,11 @@ router.post('/resend', async (req, res, next) => {
 
         let { email } = req.body; 
         let member = await Member.findByEmail(email);
-        if (member.status !== 'PENDING') {
-            throw new Error();
-        }
+        if (!member) throw new Error(11003);
+        if (member.status !== 'PENDING') throw new Error(11005);
 
         // create auth token which expire time as 30 mins later at redis
         let authToken = await genAuthToken();
-        console.log(authToken);
 
         let html = nunjucks.render('./mailTemplates/resetVerify.html', {
             expireTime: authToken.expireTime,
