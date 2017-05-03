@@ -1,11 +1,7 @@
 {% extends "../base.html" %}
 
-{% block container %}
+{% block head %}
 
-<!DOCTYPE html>
-<html>
-
-    <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -34,12 +30,9 @@
         <!-- <link rel="stylesheet" type="text/css" href="http://themes.nomansamejo.com/san/css/style.css" > -->
         <link rel="stylesheet" type="text/css" href="/static/source/css/landing.css" >
 
+{% endblock %}
 
-    </head>
-
-    <body>
-
-
+{% block container %}
         <!-- <div id='preloader' >
 
             <div class='loader' >
@@ -1127,7 +1120,4 @@
                 $(".player").YTPlayer();
             });
         </script>
-
-    </body>
-</html>
 {% endblock %}
