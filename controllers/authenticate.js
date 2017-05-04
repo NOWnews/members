@@ -1,8 +1,9 @@
 import express from 'express';
 import Promise from 'bluebird';
 import nunjucks from 'nunjucks';
+import jwt from 'jsonwebtoken';
 
-import { mailer, genAuthToken } from '../libs';
+import { mailer, genToken, verifyToken } from '../libs';
 import config from '../config';
 import redis from '../redis';
 import { Member } from '../models';
@@ -17,12 +18,17 @@ router.get('/active', async (req, res, next) => {
         if (err) throw new Error(err[0].msg);
         
         let { token } = req.query;
-        // search member's auth token and email from redis
-        const value = await redis.getValue(token);
-        if (!value) throw new Error();
 
-        const isSuccess = await Member.active(value);
-        if (!isSuccess) throw new Error('account active fail');
+        // validate jwt token
+        const decode = await verifyToken(token);
+        if (!decode) throw new Error(11002);
+
+        // check token if it is expired or used
+        const value = await redis.getValue(token);
+        if (!value) throw new Error(11002);
+
+        const isSuccess = await Member.active(decode.email);
+        if (!isSuccess) throw new Error(11006);
 
         redis.removeValue(token);
 
@@ -38,17 +44,19 @@ router.post('/resend', async (req, res, next) => {
         const err = req.validationErrors();
         if (err) throw new Error(err[0].msg);
 
-        let { email } = req.body; 
+        let { email } = req.body;
         let member = await Member.findByEmail(email);
         if (!member) throw new Error(11003);
         if (member.status !== 'PENDING') throw new Error(11005);
 
         // create auth token which expire time as 30 mins later at redis
-        let authToken = await genAuthToken();
+        const expireTime = 3600; // seconds
+        let { token, expireAt } = await genToken(email, expireTime);
+        redis.setValue(token, expireAt, expireTime);
 
         let html = nunjucks.render('./mailTemplates/resetVerify.html', {
-            expireTime: authToken.expireTime,
-            verifiedLink: `${config[env].web.url}/api/auth/active?token=${authToken.token}`
+            expireTime: expireAt,
+            verifiedLink: `${config[env].web.url}/api/auth/active?token=${token}`
         });
 
         mailer({

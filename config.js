@@ -1,6 +1,8 @@
 module.exports = {
     rootPath: __dirname,
     env: process.env.NODE_ENV || 'dev',
+    // encode by base64
+    secretkey: 'Tk9XbmV3c19tZW1iZXI=',
     dev: {
         mongodb: {
             host: 'mongodb://localhost:27017',

@@ -2,16 +2,19 @@
     "member": {
         "email": "mocha_testing@nownews.com",
         "password": "1qaz2WSX",
-        "name": "tester"
+        "name": "tester",
+        "status": "PENDING"
     },
-    "new_member": {
+    "newMember": {
         "email": "weipinyu@nownews.com",
         "password": "1qaz2WSX",
-        "name": "Cyril"
+        "name": "Cyril",
+        "status": "PENDING"
     },
-    "fake_member": {
+    "fakeMember": {
         "email": "nownews_dev@nownews.com",
         "password": "1234qazx",
-        "name": "faker"
+        "name": "faker",
+        "status": "SUSPENDED"
     }
 }

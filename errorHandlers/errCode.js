@@ -35,5 +35,9 @@ module.exports = {
     11005: {
         message: 'account status is not pending',
         statusCode: 400
+    },
+    11006: {
+        message: 'active account fail',
+        statusCode: 400
     }
 };

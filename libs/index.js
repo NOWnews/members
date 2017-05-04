@@ -2,16 +2,32 @@ import nodemailer from 'nodemailer';
 import smtpTransport from 'nodemailer-smtp-transport';
 import Promise from 'bluebird';
 import randToken from 'rand-token';
+import jwt from 'jsonwebtoken';
 import moment from 'moment-timezone';
 
+import config from '../config';
 import redis from '../redis';
 
 module.exports = {
-    genAuthToken: (email) => {
-        let token = randToken.suid(16);
-        let expireTime = moment().add(3, 'days').tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
-        redis.setValue(token, email, 259200);
-        return { token, expireTime };
+    genToken: async (email, expireTime) => {
+        const secretKey = config.secretkey;
+        const expireAt = moment().add(expireTime, 'seconds').tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
+        try {
+            const token = jwt.sign({ email, expireAt }, secretKey, { expiresIn: '1h' });
+            return Promise.resolve({ token, expireAt });
+        } catch(err) {
+            return Promise.reject(err);
+        }
+    },
+    verifyToken: async (token) => {
+        const secretKey = config.secretkey;
+        try {
+            const decoded = jwt.verify(token, secretKey);
+            if (!decoded) return Promise.resolve();
+            return Promise.resolve(decoded);
+        } catch(err) {
+            return Promise.reject(err);
+        }
     },
     mailer: async (options) => {
         let { from, to, subject, html } = options;

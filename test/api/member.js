@@ -1,6 +1,3 @@
-require('babel-core/register');
-require('babel-polyfill');
-
 import http from 'http';
 import request from 'superagent';
 import chai from 'chai';
@@ -26,7 +23,7 @@ const initData = jsonfile.readFileSync(initDataPath, (err, obj) => {
     return obj;
 });
 
-const { member, new_member, fake_member } = initData;
+const { member, newMember, fakeMember } = initData;
 
 describe('Member APIs', () => {
     // dirty code, need to refactoring
@@ -54,7 +51,6 @@ describe('Member APIs', () => {
             server.close();
             done();
         });
-
     });
 
     describe('#Member signup', () => {
@@ -71,7 +67,7 @@ describe('Member APIs', () => {
 
         it('should signup success with not exist account', (done) => {
             request.post(endPoint)
-                .send(new_member)
+                .send(newMember)
                 .end((err, res) => {
                     should.not.exist(err);
                     expect(res.status).to.equal(200);
@@ -86,7 +82,7 @@ describe('Member APIs', () => {
 
         it('should resend email fail with not exist account', (done) => {
             request.post(endPoint)
-                .send({ email: fake_member.email })
+                .send({ email: fakeMember.email })
                 .end((err, res) => {
                     should.exist(err);
                     done();
@@ -142,7 +138,7 @@ describe('Member APIs', () => {
 
         it('should signin fail with incorrect account or password', (done) => {
             request.post(endPoint)
-                .send({ email: fake_member.email, password: fake_member.password })
+                .send({ email: fakeMember.email, password: fakeMember.password })
                 .end((err, res) => {
                     should.exist(err);
                     done();
@@ -151,7 +147,7 @@ describe('Member APIs', () => {
 
         it('should signin fail with not active account', (done) => {
             request.post(endPoint)
-                .send({ email: new_member.email, password: new_member.password })
+                .send({ email: newMember.email, password: newMember.password })
                 .end((err, res) => {
                     should.exist(err);
                     done();

@@ -2,7 +2,7 @@ import express from 'express';
 import Promise from 'bluebird';
 import nunjucks from 'nunjucks';
 
-import { mailer, genAuthToken } from '../libs';
+import { mailer, genToken } from '../libs';
 import redis from '../redis';
 import config from '../config';
 import { Member } from '../models';
@@ -28,13 +28,15 @@ router.post('/signup', async (req, res, next) => {
         let data = new Member(req.body)
         let newMember = await data.new();
 
-        // create auth token which expire time as 30 mins later at redis
-        let authToken = genAuthToken(newMember.email);
-        newMember.token = authToken.token;
+        // create register token which expire time as 1 hour later at redis
+        const expireTime = 3600; // seconds
+        let { token, expireAt } = await genToken(newMember.email, expireTime);
+        newMember.token = token;
+        redis.setValue(token, expireAt, expireTime);
 
         let html = nunjucks.render('./mailTemplates/confirm.html', {
-            expireTime: authToken.expireTime,
-            verifiedLink: `${config[env].web.url}/api/auth/active?token=${authToken.token}`
+            expireTime: expireAt,
+            verifiedLink: `${config[env].web.url}/api/auth/active?token=${token}`
         });
 
         mailer({
@@ -60,7 +62,7 @@ router.post('/signin', async (req, res, next) => {
         let member = await Member.login(email, password);
         if (!member) throw new Error(10000);
         if (member.status !== "ACTIVED") throw new Error(10002);
-        
+
         return res.json(member);
     } catch(err) {
         return next(err);
