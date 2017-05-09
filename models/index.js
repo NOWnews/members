@@ -5,11 +5,14 @@ import autoIncrement from 'mongoose-auto-increment';
 
 const config = require('../config')[`${process.env.NODE_ENV}`];
 
+console.log(config);
+
 /*
  * 利用 bluebird 將 mongoose 轉換成可以使用 promise
  */
 Promise.promisifyAll(mongoose);
 mongoose.Promise = Promise;
+mongoose.set('debug', true)
 mongoose.connectAsync(`${config.mongodb.host}/${config.mongodb.db}`);
 const connection = mongoose.connection;
 console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mongodb.db}`));
@@ -17,8 +20,5 @@ console.log(chalk.blue(`mongodb connect to: ${config.mongodb.host}/${config.mong
 autoIncrement.initialize(connection);
 
 module.exports = {
-    Member: require('./member'),
-    Verify: require('./verify'),
-    ResetPassword: require('./resetPassword'),
-    Service: require('./service')
+    Member: require('./member')
 };
