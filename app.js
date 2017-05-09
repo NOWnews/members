@@ -1,6 +1,3 @@
-require('babel-core/register');
-require('babel-polyfill');
-
 import express from 'express';
 let app = express();
 

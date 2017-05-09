@@ -66,9 +66,9 @@ schema.methods.new = function () {
     this.password = hash;
     return new Promise((resolve, reject) => {
         return this.save().then(res => {
-            resolve(_.pick(res, clientSafeFields));
+            return resolve(_.pick(res, clientSafeFields));
         }).catch(err => {
-            reject(err);
+            return reject(err);
         });
     });
 }
@@ -80,12 +80,15 @@ schema.statics.login = function (email, password) {
             .then(member => {
                 if (!member) resolve(null);
                 bcrypt.compare(password, member.password, (err, res) => {
-                    if (err) reject(err);
-                    else resolve(_.pick(member, clientSafeFields))
+                    if (err) {
+                        return reject(err);
+                    } else {
+                      return resolve(_.pick(member, clientSafeFields));
+                    }
                 })
             })
             .catch(err => {
-                reject(err);
+                return reject(err);
             })
     })
 }
@@ -93,31 +96,25 @@ schema.statics.login = function (email, password) {
 schema.statics.findByEmail = function (email) {
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
-          .then(member => {
-              console.log(member);
-              if(!member) {
-                  resolve(null);
-              }
-              resolve(_.pick(member, clientSafeFields));
+          .then((member) => {
+              const result = member ? _.pick(member, clientSafeFields) : null; 
+              return resolve(result);              
           })
           .catch(err => {
-              reject(err)
+              return reject(err)
           })
     })
-    return spec;
 }
 
 schema.statics.active = function (email) {
     return new Promise((resolve, reject) => {
         return this.update({ email }, { status: 'ACTIVED' })
-            .then(res => {
-                if (res.nModified === 0) {
-                    resolve(false);
-                }
-                resolve(true);
+            .then((res) => {
+                const result = res.nModified === 0 ? false : true;
+                return resolve(result);
             })
             .catch(err => {
-                reject(err);
+                return reject(err);
             })
     });
 }

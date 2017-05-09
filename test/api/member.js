@@ -33,7 +33,9 @@ describe('Member APIs', () => {
         server = http.createServer(app);
         server.listen(port);
         Member.remove({}, function(err) {
-            if (err) throw err;
+            if (err) {
+                throw err;
+            }
             request.post(`${url}/api/member/signup`)
                 .send(member)
                 .end((err, res) => {
@@ -46,7 +48,9 @@ describe('Member APIs', () => {
 
     after('Clean', (done) => {
         Member.remove({}, function(err) {
-            if (err) throw err;
+            if (err) {
+                throw err;
+            }
             console.log('Finished.');
             server.close();
             done();

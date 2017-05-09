@@ -17,12 +17,16 @@ router.post('/signup', async (req, res, next) => {
         req.checkBody('name', 'invalid username').notEmpty();
 
         const err = req.validationErrors();
-        if (err) throw new Error(err[0].msg);
+        if (err) {
+            throw new Error(err[0].msg);
+        }
 
         let { name, email, password } = req.body;
         let member = await Member.findByEmail(email);
         // member shouldn't exist
-        if (member) throw new Error(11004);
+        if (member) {
+            throw new Error(11004);
+        }
 
         // create new member
         let data = new Member(req.body)
@@ -60,9 +64,13 @@ router.post('/signin', async (req, res, next) => {
 
         let { email, password } = req.body;
         let member = await Member.login(email, password);
-        if (!member) throw new Error(10000);
-        if (member.status !== "ACTIVED") throw new Error(10002);
+        if (!member) {
+            throw new Error(10000);
+        }
 
+        if (member.status !== "ACTIVED") {
+            throw new Error(10002);
+        }
         return res.json(member);
     } catch(err) {
         return next(err);
@@ -75,18 +83,20 @@ router.post('/thirdPartySignup', async (req, res, next) => {
         req.checkBody('thirdPartyId').notEmpty();
         req.checkBody('provider').notEmpty();
         const err = req.validationErrors();
-        if (err) throw new Error();
+        if (err) {
+            throw new Error(err);
+        }
 
         let { email } = req.body;
         let member = await Member.findByEmail(email);
         // if member's email is registered, return email is used? (need to discuss)
-        if (member) throw new Error();
-
+        if (member) {
+            throw new Error(11004);
+        }
         let data = new Member(req.body);
         let newMember = await data.new();
 
-        return res.json(newMember);
-        
+        return res.json(newMember);        
     } catch (err) {
         return next(err);
     }
@@ -97,12 +107,14 @@ router.post('/thirdPartySignin', async (req, res, next) => {
         req.checkBody('thirdPartyId').notEmpty();
         req.checkBody('provider').notEmpty();
         const err = req.validationErrors();
-        if (err) throw new Error();
-
+        if (err) {
+            throw new Error(err);
+        }
         let { thirdPartyId } = req.body;
         let member = Member.findByThirdPartyId(thirdPartyId);
-        if (!member) throw new Error();
-
+        if (!member) {
+            throw new Error(10000);
+        }
         return res.json(member);
     } catch (err) {
         return next(err);

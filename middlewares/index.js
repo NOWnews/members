@@ -14,8 +14,6 @@ module.exports = (app) => {
         customValidators: {
             chkPassword: function(value) {
                 const regStr = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,16}$/;
-                console.log('---');
-                console.log(regStr.test(value));
                 return regStr.test(value);
             }
         }
