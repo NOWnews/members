@@ -9,7 +9,7 @@ module.exports = {
             db: 'members_dev'
         },
         web: {
-            url: 'http://localhost:7777'
+            url: 'http://localhost:5000'
         },
         api: {
             url: 'http://localhost:8888'
@@ -27,7 +27,7 @@ module.exports = {
             db: 'members_staging'
         },
         web: {
-            url: 'http://member.nownews.com'
+            url: 'https://dev.nownews.com'
         },
         api: {
             url: 'http://member.nownews.com:8888'
@@ -45,7 +45,7 @@ module.exports = {
             db: 'members_production'
         },
         web: {
-            url: 'http://member.nownews.com'
+            url: 'https://dev.nownews.com'
         },
         api: {
             url: 'http://member.nownews.com:8888'

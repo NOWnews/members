@@ -16,7 +16,7 @@ router.get('/active', async (req, res, next) => {
         req.checkQuery('token', 'invalid token').notEmpty();
         const err = req.validationErrors();
         if (err) {
-            throw new Error(err);
+            throw new Error(err[0].msg);
         }
         
         let { token } = req.query;
@@ -26,6 +26,7 @@ router.get('/active', async (req, res, next) => {
         if (!decode) {
             throw new Error(11002);
         }
+
         // check token if it is expired or used
         const value = await redis.getValue(token);
         if (!value) {
@@ -39,7 +40,7 @@ router.get('/active', async (req, res, next) => {
 
         await redis.removeValue(token);
 
-        return res.status(200).end();
+        return res.json({ "status": "success" });
     } catch (err) {
         return next(err);
     }
@@ -50,7 +51,7 @@ router.post('/resend', async (req, res, next) => {
         req.checkBody('email', 'invalid email').notEmpty();
         const err = req.validationErrors();
         if (err) {
-            throw new Error(err);
+            throw new Error(err[0].msg);
         }
 
         let { email } = req.body;
@@ -81,6 +82,85 @@ router.post('/resend', async (req, res, next) => {
 
         return res.json(member);
     } catch(err) {
+        return next(err);
+    }
+});
+
+router.get('/forgotPasswd', async (req, res, next) => {
+    try {
+      req.checkQuery('token', 'invalid token').notEmpty();
+        const err = req.validationErrors();
+        if (err) {
+            throw new Error(err[0].msg);
+        }
+        
+        let { token } = req.query;
+
+        // validate jwt token
+        const decode = await verifyToken(token);
+        if (!decode) {
+            throw new Error(11002);
+        }
+        // check token if it is expired or used
+        const value = await redis.getValue(token);
+        if (!value) {
+            throw new Error(11002);
+        }
+
+        const member = await Member.findByEmail(decode.email);
+        if (!member) {
+            throw new Error(10000);
+        }
+
+        await redis.removeValue(token);
+
+        return res.json(member);
+    } catch (err) {
+        return next(err);
+    }
+});
+
+
+// thirdparty signup (e.g. Facebook Google..etc)
+router.post('/thirdPartySignup', async (req, res, next) => {
+    try {
+        req.checkBody('thirdPartyId').notEmpty();
+        req.checkBody('provider').notEmpty();
+        const err = req.validationErrors();
+        if (err) {
+            throw new Error(err[0].msg);
+        }
+
+        let { email } = req.body;
+        let member = await Member.findByEmail(email);
+        // if member's email is registered, return email is used? (need to discuss)
+        if (member) {
+            throw new Error(11004);
+        }
+        let data = new Member(req.body);
+        let newMember = await data.new();
+
+        return res.json(newMember);        
+    } catch (err) {
+        return next(err);
+    }
+});
+
+router.post('/thirdPartySignin', async (req, res, next) => {
+    try {
+        req.checkBody('thirdPartyId').notEmpty();
+        req.checkBody('provider').notEmpty();
+        const err = req.validationErrors();
+        if (err) {
+            throw new Error(err[0].msg);
+        }
+        let { thirdPartyId } = req.body;
+        let member = Member.findByThirdPartyId(thirdPartyId);
+        if (!member) {
+            throw new Error(10000);
+        }
+        return res.json(member);
+    } catch (err) {
         return next(err);
     }
 });

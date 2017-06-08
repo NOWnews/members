@@ -1,14 +1,52 @@
 import express from 'express';
 import Promise from 'bluebird';
 import nunjucks from 'nunjucks';
+import bcrypt from 'bcrypt';
 
-import { mailer, genToken } from '../libs';
+import { mailer, genToken, verifyToken } from '../libs';
 import redis from '../redis';
 import config from '../config';
 import { Member } from '../models';
 
 const env = config.env;
 const router = express.Router();
+
+// get member profile
+router.get('/', async (req, res, next) => {
+    try {
+        req.checkHeaders('X-NOWnews-Member').notEmpty();
+
+        let apiToken = req.header('X-NOWnews-Member');
+        let decode = await verifyToken(apiToken);
+        let email = decode.email;
+
+        let member = await Member.findByEmail(email);
+        if (!member) {
+            throw new Error(10000);
+        }
+        return res.json(member);
+    } catch (err) {
+        return next(err);
+    } 
+});
+
+// update member profile, not include password
+router.patch('/update', async (req, res, next) => {
+    try {
+        req.checkHeaders('X-NOWnews-Member').notEmpty();
+
+        let apiToken = req.header('X-NOWnews-Member');
+        let decode = await verifyToken(apiToken);
+        let email = decode.email;
+
+        let member = await Member.updateProfile(email, req.body);
+        member = await Member.findByEmail(email);
+        return res.json(member);
+    } catch (err) {
+
+    }
+});
+
 
 router.post('/signup', async (req, res, next) => {
     try {
@@ -60,10 +98,13 @@ router.post('/signin', async (req, res, next) => {
         req.checkBody('email', 'invalid email').notEmpty();
         req.checkBody('password', 'invalid password').notEmpty();
         const err = req.validationErrors();
-        if (err) throw new Error(err[0].msg);
+        if (err) {
+            throw new Error(err[0].msg);
+        }
 
         let { email, password } = req.body;
-        let member = await Member.login(email, password);
+        let member = await Member.verify(email, password);
+
         if (!member) {
             throw new Error(10000);
         }
@@ -71,50 +112,77 @@ router.post('/signin', async (req, res, next) => {
         if (member.status !== "ACTIVED") {
             throw new Error(10002);
         }
+
+        // generate api token
+        const expireTime = 3600; // seconds
+        let { token } = await genToken(member.email, expireTime);
+        redis.setValue(token, member, expireTime);
+        member.token = token;
+
         return res.json(member);
     } catch(err) {
         return next(err);
     }
 });
 
-// thirdparty signup (e.g. Facebook Google..etc)
-router.post('/thirdPartySignup', async (req, res, next) => {
+router.post('/forgotPasswd', async (req, res, next) => {
     try {
-        req.checkBody('thirdPartyId').notEmpty();
-        req.checkBody('provider').notEmpty();
+        req.checkBody('email').notEmpty();
         const err = req.validationErrors();
         if (err) {
-            throw new Error(err);
+            throw new Error(err[0].msg);
         }
-
         let { email } = req.body;
         let member = await Member.findByEmail(email);
-        // if member's email is registered, return email is used? (need to discuss)
-        if (member) {
-            throw new Error(11004);
+        if (!member) {
+            throw new Error(10000);
         }
-        let data = new Member(req.body);
-        let newMember = await data.new();
+        if (member.status !== "ACTIVED") {
+            throw new Error(10002);
+        }
 
-        return res.json(newMember);        
+        // create register token which expire time as 1 hour later at redis
+        const expireTime = 3600; // seconds
+        let { token, expireAt } = await genToken(email, expireTime);
+        redis.setValue(token, expireAt, expireTime);
+
+        let html = nunjucks.render('./mailTemplates/resetPassword.html', {
+            expireTime: expireAt,
+            verifiedLink: `${config[env].web.url}/api/auth/forgetPasswd?token=${token}`
+        });
+
+        mailer({
+            subject: '重新設定您的 NOWnews 會員登入密碼',
+            to: email,
+            html: html
+        });
+
+        return res.json(member);
     } catch (err) {
         return next(err);
     }
 });
 
-router.post('/thirdPartySignin', async (req, res, next) => {
+// update member login password
+router.patch('/resetPasswd', async (req, res, next) => {
     try {
-        req.checkBody('thirdPartyId').notEmpty();
-        req.checkBody('provider').notEmpty();
+        req.checkHeaders('X-NOWnews-Member').notEmpty();
+        req.checkBody('password').notEmpty();
         const err = req.validationErrors();
         if (err) {
-            throw new Error(err);
+            throw new Error(err[0].msg);
         }
-        let { thirdPartyId } = req.body;
-        let member = Member.findByThirdPartyId(thirdPartyId);
-        if (!member) {
-            throw new Error(10000);
-        }
+
+        let apiToken = req.header('X-NOWnews-Member');
+        let { password } = req.body;
+        
+        let decode = await verifyToken(apiToken);
+        let email = decode.email;
+
+        let member = await Member.findByEmail(email);
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
+        member.password = hash;
         return res.json(member);
     } catch (err) {
         return next(err);

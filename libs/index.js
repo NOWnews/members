@@ -22,11 +22,11 @@ module.exports = {
     verifyToken: async (token) => {
         const secretKey = config.secretkey;
         try {
-            const decoded = jwt.verify(token, secretKey);
-            if (!decoded) return Promise.resolve();
-            return Promise.resolve(decoded);
+            const decode = jwt.verify(token, secretKey);
+            return Promise.resolve(decode);
         } catch(err) {
-            return Promise.reject(err);
+            console.log(err);
+            return Promise.reject(new Error(11002));
         }
     },
     mailer: async (options) => {
