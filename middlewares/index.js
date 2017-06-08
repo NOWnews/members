@@ -5,6 +5,8 @@ import bodyParser from 'body-parser';
 import expressValidator from 'express-validator';
 import cors from 'cors';
 
+import { verifyToken } from '../libs';
+
 module.exports = (app) => {
 
     app.use(compression());

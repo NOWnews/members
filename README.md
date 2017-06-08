@@ -8,6 +8,64 @@ test: `npm run test`
 
 ## NOWmembers 端點
 
+### `GET` /api/member
+
+取得會員個人資料
+
+#### Header Parameters
+
+| 參數名稱 | 解釋 | 型態(或列舉) | 是否需要 | 範例 |
+|---|---|---|---|---|
+| X-NOWnews-Member | API Token | String | √ | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` |
+
+#### Response Status Code
+
+200
+
+#### Response Data
+
+```
+{
+  "name": "Simon",
+  "email": "simon.god@nownews.com",
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18"
+}
+```
+
+### `PATCH` /api/member/update
+
+更新會員個人資料
+
+#### Header Parameters
+
+| 參數名稱 | 解釋 | 型態(或列舉) | 是否需要 | 範例 |
+|---|---|---|---|---|
+| X-NOWnews-Member | API Token | String | √ | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` |
+
+#### Body Parameters
+
+| 參數名稱 | 解釋 | 型態(或列舉) | 是否需要 | 範例 |
+|---|---|---|---|---|
+| name | name | String |  | `Simon` |
+
+#### Response Status Code
+
+200
+
+#### Response Data
+
+```
+{
+  "name": "Simon",
+  "email": "simon.god@nownews.com",
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18"
+}
+```
+
 ### `POST` /api/member/signup
 
 註冊帳戶
@@ -33,15 +91,11 @@ test: `npm run test`
 
 ```
 {
-  "__v": 0,
   "name": "Simon",
   "email": "simon.god@nownews.com",
-  "password": "79b0041c680efbf70ffee568a5690a2a",
-  "_id": "57fe6215990924126a5e8f08",
-  "updatedAt": "2016-10-12T16:17:25.844Z",
-  "createdAt": "2016-10-12T16:17:25.844Z",
-  "status": "PENDING",
-  "gender": "OTHER"
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18"
 }
 ```
 
@@ -64,26 +118,25 @@ test: `npm run test`
 
 ```
 {
-  "_id": "57fe626ddef43b1356c2f1a7",
   "name": "Simon",
   "email": "simon.god@nownews.com",
-  "__v": 0,
-  "updatedAt": "2016-10-12T16:22:30.803Z",
-  "createdAt": "2016-10-12T16:18:53.723Z",
-  "status": "VERIFIED",
-  "gender": "OTHER"
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18",
+  "token": "09K5NoMxFMKYTEGEiqYizso3"
 }
 ```
 
-### `POST` /api/auth/active
+### `GET` /api/auth/active
 
-驗證帳戶
+驗證帳號
 
-#### Body Parameters
+#### Query String
 
 | 參數名稱 | 解釋 | 型態(或列舉) | 是否需要 | 範例 |
 |---|---|---|---|---|
-| token | 驗證碼 | String | √ | `09K4qsgAviCHjvObjd6olfRH` |
+| token | auth token | String |  | `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9` |
+
 
 #### Response Status Code
 
@@ -92,21 +145,12 @@ test: `npm run test`
 #### Response Data
 
 ```
-{
-  "_id": "57fe626ddef43b1356c2f1a8",
-  "updatedAt": "2016-10-12T16:22:30.801Z",
-  "email": "simon.sun@nownews.com",
-  "token": "09K5NoMxFMKYTEGEiqYizso3",
-  "expireTime": "2016-10-15T16:18:53.740Z",
-  "__v": 0,
-  "createdAt": "2016-10-12T16:18:53.743Z",
-  "status": "USED"
-}
+{ status: success }
 ```
 
 ### `POST` /api/auth/resend
 
-重新驗證帳戶
+重新驗證帳號
 
 #### Body Parameters
 
@@ -122,19 +166,15 @@ test: `npm run test`
 
 ```
 {
-  "_id": "57fe63efdef43b1356c2f1aa",
-  "updatedAt": "2016-10-12T16:25:30.428Z",
+  "name": "Simon",
   "email": "simon.god@nownews.com",
-  "token": "09K5PTZ3SjYhcOq6lqoNYbae",
-  "expireTime": "2016-10-15T16:25:30.425Z",
-  "__v": 0,
-  "createdAt": "2016-10-12T16:25:19.223Z",
-  "trashed": false,
-  "status": "UNUSED"
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18"
 }
 ```
 
-### `POST` /api/password/reset
+### `POST` /api/member/resetPasswd
 
 申請重設密碼
 
@@ -152,19 +192,15 @@ test: `npm run test`
 
 ```
 {
-  "__v": 0,
-  "updatedAt": "2016-10-12T16:28:32.638Z",
+  "name": "Simon",
   "email": "simon.god@nownews.com",
-  "token": "09K5QExxt4aDs0hvsiTQX7wG",
-  "expireTime": "2016-10-15T16:28:32.637Z",
-  "_id": "57fe64b0def43b1356c2f1ab",
-  "createdAt": "2016-10-12T16:28:32.638Z",
-  "trashed": false,
-  "status": "UNUSED"
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18"
 }
 ```
 
-### `POST` /api/password/update
+### `PATCH` /api/member/updatePasswd
 
 重設密碼
 
@@ -184,15 +220,10 @@ test: `npm run test`
 
 ```
 {
-  "_id": "57fe63efdef43b1356c2f1a9",
-  "updatedAt": "2016-10-12T16:31:12.633Z",
   "name": "Simon",
   "email": "simon.god@nownews.com",
-  "password": "a2dd55fba88382d6decb24fef85a68aa",
-  "__v": 0,
-  "createdAt": "2016-10-12T16:25:19.219Z",
-  "trashed": false,
-  "status": "VERIFIED",
-  "gender": "OTHER"
+  "gender": "MAN",
+  "phone": "0912345567",
+  "birthday": "1988-01-18"
 }
 ```

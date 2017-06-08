@@ -1,9 +1,9 @@
 import _ from 'lodash';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcrypt';
 import mongoose, { Schema } from 'mongoose';
 import autoIncrement from 'mongoose-auto-increment';
 
-const clientSafeFields = ['name', 'email', 'phone', 'gender', 'birthday', 'status', 'createdAt', 'updatedAt']
+const clientSafeFields = ['id', 'name', 'email', 'phone', 'gender', 'birthday', 'status']
 
 const schema = new Schema({
     id: {
@@ -60,7 +60,7 @@ const schema = new Schema({
 });
 
 // instance methods
-schema.methods.new = function () {
+schema.methods.new = function() {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(this.password, salt);
     this.password = hash;
@@ -74,7 +74,7 @@ schema.methods.new = function () {
 }
 
 // class methods
-schema.statics.login = function (email, password) {
+schema.statics.verify = function(email, password) {
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
             .then(member => {
@@ -82,9 +82,11 @@ schema.statics.login = function (email, password) {
                 bcrypt.compare(password, member.password, (err, res) => {
                     if (err) {
                         return reject(err);
-                    } else {
-                      return resolve(_.pick(member, clientSafeFields));
                     }
+                    if (!res) {
+                        return reject(new Error(10001));
+                    }
+                    return resolve(_.pick(member, clientSafeFields));
                 })
             })
             .catch(err => {
@@ -93,7 +95,7 @@ schema.statics.login = function (email, password) {
     })
 }
 
-schema.statics.findByEmail = function (email) {
+schema.statics.findByEmail = function(email) {
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
           .then((member) => {
@@ -106,10 +108,43 @@ schema.statics.findByEmail = function (email) {
     })
 }
 
-schema.statics.active = function (email) {
+schema.statics.active = function(email) {
     return new Promise((resolve, reject) => {
         return this.update({ email }, { status: 'ACTIVED' })
             .then((res) => {
+                const result = res.nModified === 0 ? false : true;
+                return resolve(result);
+            })
+            .catch(err => {
+                return reject(err);
+            })
+    });
+}
+
+schema.statics.updateProfile = function(email, obj) {
+    console.log(obj);
+    return new Promise((resolve, reject) => {
+        return this.update({ email }, obj)
+            .then(res => {
+                const result = res.nModified === 0 ? false : true;
+                console.log(res.nModified);
+                return this.findOne({ email });
+            })
+            .then(result => {
+                return resolve(result);
+            })
+            .catch(err => {
+                return reject(err);
+            })
+    });
+}
+
+schema.statics.updatePasswd = function(email, password) {
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(password, salt);
+    return new Promise((resolve, reject) => {
+        return this.update({ email }, { password: hash })
+            .then(res => {
                 const result = res.nModified === 0 ? false : true;
                 return resolve(result);
             })

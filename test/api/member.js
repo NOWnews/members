@@ -169,4 +169,34 @@ describe('Member APIs', () => {
                 })
         });
     })
+
+    // describe('#Get Member profile', () => {
+    //     const endPoint = `${url}/api/member/profile`;
+
+    //     it('should get member profile success with exist account', (done) => {
+    //         request
+    //             .get(endPoint)
+    //             .set('X-NOWnews-Member', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imxva2kwMTE5QGdtYWlsLmNvbSIsImV4cGlyZUF0IjoiMjAxNy0wNi0wOCAxNzo1MDoxOSIsImlhdCI6MTQ5NjkxMTgxOSwiZXhwIjoxNDk2OTE1NDE5fQ.hkVbJL8z2Q5CrxE9CgeemC12pDAnUAhsdO58r1YVbsI')
+    //             .end((err, res) => {
+    //                 should.not.exist(err);
+    //                 done();
+    //             })
+                
+    //     });
+    // })
+
+    // describe('#Member profile update', () => {
+    //     const endPoint = `${url}/api/member/profile/update`;
+
+    //     it('should get member profile success with exist account', (done) => {
+    //         request
+    //             .get(endPoint)
+    //             .set('X-NOWnews-Member')
+    //             .end((err, res) => {
+    //                 should.not.exist(err);
+    //                 done();
+    //             })
+                
+    //     });
+    // })
 });
