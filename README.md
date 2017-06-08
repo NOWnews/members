@@ -172,8 +172,6 @@ test: `npm run test`
   "phone": "0912345567",
   "birthday": "1988-01-18"
 }
-<<<<<<< HEAD
-=======
 ```
 
 ### `POST` /api/member/resetPasswd
@@ -228,5 +226,4 @@ test: `npm run test`
   "phone": "0912345567",
   "birthday": "1988-01-18"
 }
->>>>>>> feature/resetpasswd
 ```
