@@ -88,7 +88,10 @@ router.get('/oauth/callback',
             const expireTime = 3600; // seconds
             let { token } = await genToken(email, expireTime);
             redis.setValue(token, member, expireTime);
-            return res.set({ email, name, token })
+            res.setHeader('email', email);
+            res.setHeader('name', name);
+            res.setHeader('token', token);
+            return res.redirect(('https://dev.nownews.com/api/oauth_callback');
         } catch (err) {
             console.log(err);
             return res.status(500);
