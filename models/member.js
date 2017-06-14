@@ -144,14 +144,14 @@ schema.statics.active = function(email) {
     });
 }
 
-schema.statics.updateProfile = function(email, obj) {
-    console.log(obj);
+schema.statics.updateProfile = function(id, obj) {
+    const data = _.pick(obj, ['name', 'phone', 'gender', 'birthday']);
     return new Promise((resolve, reject) => {
-        return this.update({ email }, obj)
+        return this.update({ id }, data)
             .then(res => {
                 const result = res.nModified === 0 ? false : true;
                 console.log(res.nModified);
-                return this.findOne({ email });
+                return this.findOne({ id });
             })
             .then(result => {
                 return resolve(result);
