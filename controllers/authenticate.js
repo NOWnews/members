@@ -88,7 +88,7 @@ router.get('/oauth/callback',
             const expireTime = 3600; // seconds
             let { token } = await genToken(email, expireTime);
             redis.setValue(token, member, expireTime);
-            return res.json({ email, name, token });
+            return res.set({ email, name, token })
         } catch (err) {
             console.log(err);
             return res.status(500);

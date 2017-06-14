@@ -72,6 +72,18 @@ schema.methods.new = function() {
     });
 }
 
+schema.statics.findByMemberId = function(id) {
+    return new Promise((resolve, reject) => {
+        return this.findOne({ id })
+            .then(member => {
+                resolve(member);
+            })
+            .catch(err => {
+                reject(err);
+            })
+    });
+};
+
 // class methods
 schema.statics.verify = function(email, password) {
     return new Promise((resolve, reject) => {

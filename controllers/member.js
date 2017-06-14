@@ -18,9 +18,9 @@ router.get('/', async (req, res, next) => {
 
         let apiToken = req.header('X-NOWnews-Member');
         let decode = await verifyToken(apiToken);
-        let email = decode.email;
+        let value = await redis.getValue(apiToken);
 
-        let member = await Member.findByEmail(email);
+        let member = await Member.findByMemberId(value.id);
         if (!member) {
             throw new Error(10000);
         }
@@ -37,91 +37,14 @@ router.patch('/update', async (req, res, next) => {
 
         let apiToken = req.header('X-NOWnews-Member');
         let decode = await verifyToken(apiToken);
-        let email = decode.email;
+        let value = await redis.getValue(apiToken);
+        let memberId = value.id;
 
-        let member = await Member.updateProfile(email, req.body);
-        member = await Member.findByEmail(email);
+        let member = await Member.updateProfile(memberId, req.body);
+        member = await Member.findByMemberId(memberId);
         return res.json(member);
     } catch (err) {
 
-    }
-});
-
-
-router.post('/signup', async (req, res, next) => {
-    try {
-        req.checkBody('email', 'invalid email').isEmail().notEmpty();
-        req.checkBody('password', 'invalid password').chkPassword().notEmpty();
-        req.checkBody('name', 'invalid username').notEmpty();
-
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
-
-        let { name, email, password } = req.body;
-        let member = await Member.findByEmail(email);
-        // member shouldn't exist
-        if (member) {
-            throw new Error(11004);
-        }
-
-        // create new member
-        let data = new Member(req.body)
-        let newMember = await data.new();
-
-        // create register token which expire time as 1 hour later at redis
-        const expireTime = 3600; // seconds
-        let { token, expireAt } = await genToken(newMember.email, expireTime);
-        newMember.token = token;
-        redis.setValue(token, expireAt, expireTime);
-
-        let html = nunjucks.render('./mailTemplates/confirm.html', {
-            expireTime: expireAt,
-            verifiedLink: `${config[env].web.url}/api/auth/active?token=${token}`
-        });
-
-        mailer({
-            subject: '感謝您註冊 NOWnews 會員',
-            to: newMember.email,
-            html: html
-        });
-
-        return res.json(newMember);
-    } catch (err) {
-        return next(err);
-    }
-});
-
-router.post('/signin', async (req, res, next) => {
-    try {
-        req.checkBody('email', 'invalid email').notEmpty();
-        req.checkBody('password', 'invalid password').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
-
-        let { email, password } = req.body;
-        let member = await Member.verify(email, password);
-
-        if (!member) {
-            throw new Error(10000);
-        }
-
-        if (member.status !== "ACTIVED") {
-            throw new Error(10002);
-        }
-
-        // generate api token
-        const expireTime = 3600; // seconds
-        let { token } = await genToken(member.email, expireTime);
-        redis.setValue(token, member, expireTime);
-        member.token = token;
-
-        return res.json(member);
-    } catch(err) {
-        return next(err);
     }
 });
 
@@ -188,5 +111,84 @@ router.patch('/resetPasswd', async (req, res, next) => {
         return next(err);
     }
 });
+
+
+// router.post('/signup', async (req, res, next) => {
+//     try {
+//         req.checkBody('email', 'invalid email').isEmail().notEmpty();
+//         req.checkBody('password', 'invalid password').chkPassword().notEmpty();
+//         req.checkBody('name', 'invalid username').notEmpty();
+
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
+
+//         let { name, email, password } = req.body;
+//         let member = await Member.findByEmail(email);
+//         // member shouldn't exist
+//         if (member) {
+//             throw new Error(11004);
+//         }
+
+//         // create new member
+//         let data = new Member(req.body)
+//         let newMember = await data.new();
+
+//         // create register token which expire time as 1 hour later at redis
+//         const expireTime = 3600; // seconds
+//         let { token, expireAt } = await genToken(newMember.email, expireTime);
+//         newMember.token = token;
+//         redis.setValue(token, expireAt, expireTime);
+
+//         let html = nunjucks.render('./mailTemplates/confirm.html', {
+//             expireTime: expireAt,
+//             verifiedLink: `${config[env].web.url}/api/auth/active?token=${token}`
+//         });
+
+//         mailer({
+//             subject: '感謝您註冊 NOWnews 會員',
+//             to: newMember.email,
+//             html: html
+//         });
+
+//         return res.json(newMember);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
+
+// router.post('/signin', async (req, res, next) => {
+//     try {
+//         req.checkBody('email', 'invalid email').notEmpty();
+//         req.checkBody('password', 'invalid password').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
+
+//         let { email, password } = req.body;
+//         let member = await Member.verify(email, password);
+
+//         if (!member) {
+//             throw new Error(10000);
+//         }
+
+//         if (member.status !== "ACTIVED") {
+//             throw new Error(10002);
+//         }
+
+//         // generate api token
+//         const expireTime = 3600; // seconds
+//         let { token } = await genToken(member.email, expireTime);
+//         redis.setValue(token, member, expireTime);
+//         member.token = token;
+
+//         return res.json(member);
+//     } catch(err) {
+//         return next(err);
+//     }
+// });
+
 
 module.exports = router;
