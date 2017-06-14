@@ -32,13 +32,62 @@ passport.use(new GoogleStrategy({
   }
 ));
 
+
+router.post('/signin', async (req, res, next) => {
+    try {
+        req.checkBody('email', 'invalid email').notEmpty();
+        req.checkBody('password', 'invalid password').notEmpty();
+        const err = req.validationErrors();
+        if (err) {
+            throw new Error(err[0].msg);
+        }
+
+        let { email, password } = req.body;
+        let member = await Member.verify(email, password);
+
+        if (!member) {
+            throw new Error(10000);
+        }
+
+        if (member.status !== "ACTIVED") {
+            throw new Error(10002);
+        }
+
+        // generate api token
+        const expireTime = 3600; // seconds
+        let { token } = await genToken(member.email, expireTime);
+        redis.setValue(token, member, expireTime);
+        member.token = token;
+
+        return res.json(member);
+    } catch(err) {
+        return next(err);
+    }
+});
+
 router.get('/oauth', passport.authenticate('google', { scope: ['openid', 'email', 'profile'] }));
 
 router.get('/oauth/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('https://tw.yahoo.com');
+  async function(req, res) {
+    const { id, gender, displayName } = req.user;
+    const email = req.user.emails[0].value;
+    let member = await Member.findByGoogleId(id);
+    if (!member) {
+        const obj = {
+            googleId: id,
+            email: email,
+            name: displayName,
+            gender: gender
+        }
+        let data = new Member(obj)
+        member = await data.new();
+    }
+    console.log(member);
+    const expireTime = 3600; // seconds
+    let { token } = await genToken(email, expireTime);
+    redis.setValue(token, member, expireTime);
+    return res.json({ email, token });
   }
 );
 

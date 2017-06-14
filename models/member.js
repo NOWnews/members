@@ -1,9 +1,9 @@
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import mongoose, { Schema } from 'mongoose';
-import autoIncrement from 'mongoose-auto-increment';
+import uuid from 'node-uuid';
 
-const clientSafeFields = ['id', 'name', 'email', 'phone', 'gender', 'birthday', 'status']
+const clientSafeFields = ['id', 'name', 'email', 'phone', 'gender', 'birthday', 'status', 'googleId']
 
 const schema = new Schema({
     id: {
@@ -21,8 +21,7 @@ const schema = new Schema({
         lowercase: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     phone: {
         type: String
@@ -35,15 +34,15 @@ const schema = new Schema({
     birthday: {
         type: String
     },
-    thirdPartyProvider: {
+    googleId: {
         type: String
     },
-    thirdPartyId: {
+    facebookId: {
         type: String
     },
     status: {
         type: String,
-        default: 'PENDING'
+        default: 'ACTIVED'
     },
     createdAt: {
         type: Date,
@@ -61,9 +60,7 @@ const schema = new Schema({
 
 // instance methods
 schema.methods.new = function() {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(this.password, salt);
-    this.password = hash;
+    this.id = uuid.v4();
     return new Promise((resolve, reject) => {
         return this.save().then(res => {
             return resolve(_.pick(res, clientSafeFields));
@@ -93,6 +90,16 @@ schema.statics.verify = function(email, password) {
                 return reject(err);
             })
     })
+}
+
+schema.statics.findByOauthId = function(googlId) {
+    return this.findOne({ googleId })
+        .then((member) => {
+            return new Promise.resolve(member);
+        })
+        .catch((err) => {
+            return new Promise.reject(err);
+        })
 }
 
 schema.statics.findByEmail = function(email) {
@@ -155,11 +162,5 @@ schema.statics.updatePasswd = function(email, password) {
 }
 
 schema.index({ id: 1 }, { sparse: true });
-
-schema.plugin(autoIncrement.plugin, {
-    model: 'member',
-    field: 'id',
-    startAt: 1
-});
 
 module.exports = mongoose.model('member', schema);

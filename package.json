@@ -40,6 +40,7 @@
     "mongoose-auto-increment": "^5.0.1",
     "morgan": "^1.7.0",
     "node-fetch": "^1.6.3",
+    "node-uuid": "^1.4.8",
     "nodemailer": "^2.6.4",
     "nodemailer-smtp-transport": "^2.7.2",
     "nodemon": "^1.10.2",
