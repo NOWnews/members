@@ -71,26 +71,27 @@ router.get('/oauth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     async function(req, res) {
         try {
-            const { id, gender, displayName } = req.user;
+            const { id, gender } = req.user;
             const email = req.user.emails[0].value;
+            const name = req.user.name.givenName;
             let member = await Member.findByGoogleId(id);
             if (!member) {
                 const obj = {
                     googleId: id,
                     email: email,
-                    name: displayName,
+                    name: name,
                     gender: gender
                 }
                 let data = new Member(obj)
                 member = await data.new();
             }
-            console.log(member);
             const expireTime = 3600; // seconds
             let { token } = await genToken(email, expireTime);
             redis.setValue(token, member, expireTime);
-            return res.json({ email, token });
+            return res.json({ email, name, token });
         } catch (err) {
-            return next(err);
+            console.log(err);
+            return res.status(500);
         }
     }
 );

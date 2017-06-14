@@ -2,8 +2,9 @@ import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import mongoose, { Schema } from 'mongoose';
 import uuid from 'node-uuid';
+import Promise from 'bluebird'
 
-const clientSafeFields = ['id', 'name', 'email', 'phone', 'gender', 'birthday', 'status', 'googleId']
+const clientSafeFields = ['id', 'name', 'email', 'phone', 'gender', 'birthday', 'status']
 
 const schema = new Schema({
     id: {
@@ -65,6 +66,7 @@ schema.methods.new = function() {
         return this.save().then(res => {
             return resolve(_.pick(res, clientSafeFields));
         }).catch(err => {
+            console.log(err);
             return reject(err);
         });
     });
@@ -93,13 +95,15 @@ schema.statics.verify = function(email, password) {
 }
 
 schema.statics.findByGoogleId = function(googleId) {
-    return this.findOne({ googleId })
-        .then((member) => {
-            return new Promise.resolve(member);
-        })
-        .catch((err) => {
-            return new Promise.reject(err);
-        })
+    return new Promise((resolve, reject) => {
+        return this.findOne({ googleId })
+            .then(member => {
+                resolve(member);
+            })
+            .catch(err => {
+                reject(err);
+            })
+    })
 }
 
 schema.statics.findByEmail = function(email) {
