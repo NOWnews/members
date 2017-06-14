@@ -68,27 +68,31 @@ router.post('/signin', async (req, res, next) => {
 router.get('/oauth', passport.authenticate('google', { scope: ['openid', 'email', 'profile'] }));
 
 router.get('/oauth/callback', 
-  passport.authenticate('google', { failureRedirect: '/' }),
-  async function(req, res) {
-    const { id, gender, displayName } = req.user;
-    const email = req.user.emails[0].value;
-    let member = await Member.findByGoogleId(id);
-    if (!member) {
-        const obj = {
-            googleId: id,
-            email: email,
-            name: displayName,
-            gender: gender
+    passport.authenticate('google', { failureRedirect: '/' }),
+    async function(req, res) {
+        try {
+            const { id, gender, displayName } = req.user;
+            const email = req.user.emails[0].value;
+            let member = await Member.findByGoogleId(id);
+            if (!member) {
+                const obj = {
+                    googleId: id,
+                    email: email,
+                    name: displayName,
+                    gender: gender
+                }
+                let data = new Member(obj)
+                member = await data.new();
+            }
+            console.log(member);
+            const expireTime = 3600; // seconds
+            let { token } = await genToken(email, expireTime);
+            redis.setValue(token, member, expireTime);
+            return res.json({ email, token });
+        } catch (err) {
+            return next(err);
         }
-        let data = new Member(obj)
-        member = await data.new();
     }
-    console.log(member);
-    const expireTime = 3600; // seconds
-    let { token } = await genToken(email, expireTime);
-    redis.setValue(token, member, expireTime);
-    return res.json({ email, token });
-  }
 );
 
 router.get('/active', async (req, res, next) => {

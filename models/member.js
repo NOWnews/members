@@ -92,7 +92,7 @@ schema.statics.verify = function(email, password) {
     })
 }
 
-schema.statics.findByOauthId = function(googlId) {
+schema.statics.findByGoogleId = function(googleId) {
     return this.findOne({ googleId })
         .then((member) => {
             return new Promise.resolve(member);
