@@ -2,6 +2,7 @@ import express from 'express';
 import Promise from 'bluebird';
 import nunjucks from 'nunjucks';
 import jwt from 'jsonwebtoken';
+import passport from 'passport';
 
 import { mailer, genToken, verifyToken } from '../libs';
 import config from '../config';
@@ -10,6 +11,36 @@ import { Member } from '../models';
 
 const env = config.env;
 const router = express.Router();
+const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+router.use(passport.initialize());
+router.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user.id);
+});
+
+passport.use(new GoogleStrategy({
+    clientID: config.oauth.clientId,
+    clientSecret: config.oauth.clientSecret,
+    callbackURL: config.oauth.callbackURL,
+    scope: ['openid', 'email', 'profile']
+  },
+  function(token, tokenSecret, profile, done) {
+    console.log(profile);
+    return done(null, profile)
+  }
+));
+
+router.get('/oauth', passport.authenticate('google', { scope: ['openid', 'email', 'profile'] }));
+
+router.get('/oauth/callback', 
+  passport.authenticate('google', { failureRedirect: '/' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('https://tw.yahoo.com');
+  }
+);
 
 router.get('/active', async (req, res, next) => {
     try {

@@ -3,6 +3,11 @@ module.exports = {
     env: process.env.NODE_ENV || 'dev',
     // encode by base64
     secretkey: 'Tk9XbmV3c19tZW1iZXI=',
+    oauth: {
+        clientId: '773287785720-kkb49je5d3sfuav28vo9g0ebdmmna1dg.apps.googleusercontent.com',
+        clientSecret: '2VQI61Jctj3f-MgYtZgEY0rn',
+        callbackURL: 'memberapi.nownews.com/auth/oauth'
+    },
     dev: {
         mongodb: {
             host: 'mongodb://localhost:27017',
