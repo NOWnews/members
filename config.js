@@ -4,9 +4,9 @@ module.exports = {
     // encode by base64
     secretkey: 'Tk9XbmV3c19tZW1iZXI=',
     oauth: {
-        clientId: '773287785720-kkb49je5d3sfuav28vo9g0ebdmmna1dg.apps.googleusercontent.com',
-        clientSecret: '2VQI61Jctj3f-MgYtZgEY0rn',
-        callbackURL: 'memberapi.nownews.com/auth/oauth'
+        clientId: '773287785720-gfh8q720qjo6sdoar8hmdj2jr4gmlka8.apps.googleusercontent.com',
+        clientSecret: 'Xa1zBF8R0g5Y9nN5fbElHaPv',
+        callbackURL: 'http://memberapi.nownews.com:8888/api/auth/oauth/callback'
     },
     dev: {
         mongodb: {
