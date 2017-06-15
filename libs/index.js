@@ -12,7 +12,7 @@ module.exports = {
     genToken: async (id, type) => {
         const secretKey = config.secretkey;
         try {
-            const token = jwt.sign({ email, type }, secretKey, { algorithm: 'HS384' });
+            const token = jwt.sign({ id, type }, secretKey, { algorithm: 'HS384' });
             return Promise.resolve(token);
         } catch(err) {
             return Promise.reject(err);
