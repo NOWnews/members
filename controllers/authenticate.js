@@ -67,7 +67,7 @@ router.post('/signin', async (req, res, next) => {
 
 router.get('/oauth', passport.authenticate('google', { scope: ['openid', 'email', 'profile'] }));
 
-router.get('/oauth/callback', 
+router.get('/oauth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     async function(req, res) {
         try {
@@ -88,10 +88,11 @@ router.get('/oauth/callback',
             const expireTime = 3600; // seconds
             let { token } = await genToken(email, expireTime);
             redis.setValue(token, member, expireTime);
-            res.setHeader('email', email);
-            res.setHeader('name', name);
-            res.setHeader('token', token);
-            return res.redirect(('https://dev.nownews.com/api/oauth_callback');
+            res.append('Set-Cookie', `NOW_member=${id}`);
+            res.append('Set-Cookie', `email=${email}`);
+            res.append('Set-Cookie', `token=${token}`);
+            res.append('Set-Cookie', `name=${name}`);
+            return res.redirect('https://dev.nownews.com/api/oauth_callback');
         } catch (err) {
             console.log(err);
             return res.status(500);
@@ -106,7 +107,7 @@ router.get('/active', async (req, res, next) => {
         if (err) {
             throw new Error(err[0].msg);
         }
-        
+
         let { token } = req.query;
 
         // validate jwt token
@@ -147,7 +148,7 @@ router.post('/resend', async (req, res, next) => {
         if (!member) {
             throw new Error(11003);
         }
-        
+
         if (member.status !== 'PENDING') {
             throw new Error(11005);
         }
@@ -181,7 +182,7 @@ router.get('/forgotPasswd', async (req, res, next) => {
         if (err) {
             throw new Error(err[0].msg);
         }
-        
+
         let { token } = req.query;
 
         // validate jwt token
@@ -228,7 +229,7 @@ router.post('/thirdPartySignup', async (req, res, next) => {
         let data = new Member(req.body);
         let newMember = await data.new();
 
-        return res.json(newMember);        
+        return res.json(newMember);
     } catch (err) {
         return next(err);
     }
