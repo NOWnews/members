@@ -48,7 +48,20 @@ router.patch('/update', async (req, res, next) => {
         redis.setValue(apiToken, value, 1800);
         return res.json(member);
     } catch (err) {
+        return next(err);
+    }
+});
 
+router.get('/logout', async (req, res, next) => {
+    try {
+        req.checkHeaders('X-NOWnews-Member').notEmpty();
+
+        let apiToken = req.header('X-NOWnews-Member');
+        let decode = await verifyToken(apiToken);
+        redis.removeValue(token);
+        return res.send(200).end();
+    } catch (err) {
+        return next(err);
     }
 });
 

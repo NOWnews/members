@@ -32,7 +32,6 @@ passport.use(new GoogleStrategy({
   }
 ));
 
-
 router.post('/signin', async (req, res, next) => {
     try {
         req.checkBody('email', 'invalid email').notEmpty();
@@ -55,7 +54,7 @@ router.post('/signin', async (req, res, next) => {
 
         // generate api token
         const expireTime = 3600; // seconds
-        let { token } = await genToken(member.id, 'login');
+        let token = await genToken(member.id, 'login');
         redis.setValue(token, member, 1800);
         member.token = token;
 
@@ -85,7 +84,7 @@ router.get('/oauth/callback',
                 let data = new Member(obj)
                 member = await data.new();
             }
-            let { token } = await genToken(member.id, 'login');
+            let token = await genToken(member.id, 'login');
             redis.setValue(token, member, 1800);
             return res.redirect(`https://dev.nownews.com/api/oauth_callback?token=${token}`);
         } catch (err) {
