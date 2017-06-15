@@ -24,6 +24,8 @@ router.get('/', async (req, res, next) => {
         if (!member) {
             throw new Error(10000);
         }
+        redis.removeValue(apiToken);
+        redis.setValue(apiToken, value, 1800);
         return res.json(member);
     } catch (err) {
         return next(err);
@@ -42,75 +44,77 @@ router.patch('/update', async (req, res, next) => {
 
         let member = await Member.updateProfile(memberId, req.body);
         member = await Member.findByMemberId(memberId);
+        redis.removeValue(apiToken);
+        redis.setValue(apiToken, value, 1800);
         return res.json(member);
     } catch (err) {
 
     }
 });
 
-router.post('/forgotPasswd', async (req, res, next) => {
-    try {
-        req.checkBody('email').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
-        let { email } = req.body;
-        let member = await Member.findByEmail(email);
-        if (!member) {
-            throw new Error(10000);
-        }
-        if (member.status !== "ACTIVED") {
-            throw new Error(10002);
-        }
+// router.post('/forgotPasswd', async (req, res, next) => {
+//     try {
+//         req.checkBody('email').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
+//         let { email } = req.body;
+//         let member = await Member.findByEmail(email);
+//         if (!member) {
+//             throw new Error(10000);
+//         }
+//         if (member.status !== "ACTIVED") {
+//             throw new Error(10002);
+//         }
 
-        // create register token which expire time as 1 hour later at redis
-        const expireTime = 3600; // seconds
-        let { token, expireAt } = await genToken(email, expireTime);
-        redis.setValue(token, expireAt, expireTime);
+//         // create register token which expire time as 1 hour later at redis
+//         const expireTime = 3600; // seconds
+//         let { token, expireAt } = await genToken(email, expireTime);
+//         redis.setValue(token, expireAt, expireTime);
 
-        let html = nunjucks.render('./mailTemplates/resetPassword.html', {
-            expireTime: expireAt,
-            verifiedLink: `${config[env].web.url}/api/auth/forgetPasswd?token=${token}`
-        });
+//         let html = nunjucks.render('./mailTemplates/resetPassword.html', {
+//             expireTime: expireAt,
+//             verifiedLink: `${config[env].web.url}/api/auth/forgetPasswd?token=${token}`
+//         });
 
-        mailer({
-            subject: '重新設定您的 NOWnews 會員登入密碼',
-            to: email,
-            html: html
-        });
+//         mailer({
+//             subject: '重新設定您的 NOWnews 會員登入密碼',
+//             to: email,
+//             html: html
+//         });
 
-        return res.json(member);
-    } catch (err) {
-        return next(err);
-    }
-});
+//         return res.json(member);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
-// update member login password
-router.patch('/resetPasswd', async (req, res, next) => {
-    try {
-        req.checkHeaders('X-NOWnews-Member').notEmpty();
-        req.checkBody('password').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
+// // update member login password
+// router.patch('/resetPasswd', async (req, res, next) => {
+//     try {
+//         req.checkHeaders('X-NOWnews-Member').notEmpty();
+//         req.checkBody('password').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
 
-        let apiToken = req.header('X-NOWnews-Member');
-        let { password } = req.body;
+//         let apiToken = req.header('X-NOWnews-Member');
+//         let { password } = req.body;
         
-        let decode = await verifyToken(apiToken);
-        let email = decode.email;
+//         let decode = await verifyToken(apiToken);
+//         let email = decode.email;
 
-        let member = await Member.findByEmail(email);
-        const salt = bcrypt.genSaltSync(10);
-        const hash = bcrypt.hashSync(password, salt);
-        member.password = hash;
-        return res.json(member);
-    } catch (err) {
-        return next(err);
-    }
-});
+//         let member = await Member.findByEmail(email);
+//         const salt = bcrypt.genSaltSync(10);
+//         const hash = bcrypt.hashSync(password, salt);
+//         member.password = hash;
+//         return res.json(member);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 
 // router.post('/signup', async (req, res, next) => {

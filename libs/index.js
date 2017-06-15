@@ -9,12 +9,11 @@ import config from '../config';
 import redis from '../redis';
 
 module.exports = {
-    genToken: async (email, expireTime) => {
+    genToken: async (id, type) => {
         const secretKey = config.secretkey;
-        const expireAt = moment().add(expireTime, 'seconds').tz('Asia/Taipei').format('YYYY-MM-DD HH:mm:ss');
         try {
-            const token = jwt.sign({ email, expireAt }, secretKey, { expiresIn: '1h' });
-            return Promise.resolve({ token, expireAt });
+            const token = jwt.sign({ email, type }, secretKey, { algorithm: 'HS384' });
+            return Promise.resolve(token);
         } catch(err) {
             return Promise.reject(err);
         }
@@ -22,7 +21,7 @@ module.exports = {
     verifyToken: async (token) => {
         const secretKey = config.secretkey;
         try {
-            const decode = jwt.verify(token, secretKey);
+            const decode = jwt.verify(token, secretKey, { algorithm: 'HS384' });
             return Promise.resolve(decode);
         } catch(err) {
             console.log(err);

@@ -55,8 +55,8 @@ router.post('/signin', async (req, res, next) => {
 
         // generate api token
         const expireTime = 3600; // seconds
-        let { token } = await genToken(member.email, expireTime);
-        redis.setValue(token, member, expireTime);
+        let { token } = await genToken(member.id, 'login');
+        redis.setValue(token, member, 1800);
         member.token = token;
 
         return res.json(member);
@@ -67,7 +67,7 @@ router.post('/signin', async (req, res, next) => {
 
 router.get('/oauth', passport.authenticate('google', { scope: ['openid', 'email', 'profile'] }));
 
-router.get('/oauth/callback', 
+router.get('/oauth/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     async function(req, res) {
         try {
@@ -85,11 +85,9 @@ router.get('/oauth/callback',
                 let data = new Member(obj)
                 member = await data.new();
             }
-            const expireTime = 3600; // seconds
-            let { token } = await genToken(email, expireTime);
-            redis.setValue(token, member, expireTime);
-            res.setHeader('token', token);
-            return res.redirect(('https://dev.nownews.com/api/oauth_callback');
+            let { token } = await genToken(member.id, 'login');
+            redis.setValue(token, member, 1800);
+            return res.redirect(`https://dev.nownews.com/api/oauth_callback?token=${token}`);
         } catch (err) {
             console.log(err);
             return res.status(500);
@@ -97,158 +95,158 @@ router.get('/oauth/callback',
     }
 );
 
-router.get('/active', async (req, res, next) => {
-    try {
-        req.checkQuery('token', 'invalid token').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
-        
-        let { token } = req.query;
+// router.get('/active', async (req, res, next) => {
+//     try {
+//         req.checkQuery('token', 'invalid token').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
 
-        // validate jwt token
-        const decode = await verifyToken(token);
-        if (!decode) {
-            throw new Error(11002);
-        }
+//         let { token } = req.query;
 
-        // check token if it is expired or used
-        const value = await redis.getValue(token);
-        if (!value) {
-            throw new Error(11002);
-        }
+//         // validate jwt token
+//         const decode = await verifyToken(token);
+//         if (!decode) {
+//             throw new Error(11002);
+//         }
 
-        const isSuccess = await Member.active(decode.email);
-        if (!isSuccess) {
-            throw new Error(11006);
-        }
+//         // check token if it is expired or used
+//         const value = await redis.getValue(token);
+//         if (!value) {
+//             throw new Error(11002);
+//         }
 
-        await redis.removeValue(token);
+//         const isSuccess = await Member.active(decode.email);
+//         if (!isSuccess) {
+//             throw new Error(11006);
+//         }
 
-        return res.json({ "status": "success" });
-    } catch (err) {
-        return next(err);
-    }
-});
+//         await redis.removeValue(token);
 
-router.post('/resend', async (req, res, next) => {
-    try {
-        req.checkBody('email', 'invalid email').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
+//         return res.json({ "status": "success" });
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
-        let { email } = req.body;
-        let member = await Member.findByEmail(email);
-        if (!member) {
-            throw new Error(11003);
-        }
-        
-        if (member.status !== 'PENDING') {
-            throw new Error(11005);
-        }
+// router.post('/resend', async (req, res, next) => {
+//     try {
+//         req.checkBody('email', 'invalid email').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
 
-        // create auth token which expire time as 30 mins later at redis
-        const expireTime = 3600; // seconds
-        let { token, expireAt } = await genToken(email, expireTime);
-        await redis.setValue(token, expireAt, expireTime);
+//         let { email } = req.body;
+//         let member = await Member.findByEmail(email);
+//         if (!member) {
+//             throw new Error(11003);
+//         }
 
-        let html = nunjucks.render('./mailTemplates/resetVerify.html', {
-            expireTime: expireAt,
-            verifiedLink: `${config[env].web.url}/api/auth/active?token=${token}`
-        });
+//         if (member.status !== 'PENDING') {
+//             throw new Error(11005);
+//         }
 
-        mailer({
-            subject: '重新驗證您的 NOWnews 帳戶',
-            to: member.email,
-            html: html
-        });
+//         // create auth token which expire time as 30 mins later at redis
+//         const expireTime = 3600; // seconds
+//         let { token, expireAt } = await genToken(email, expireTime);
+//         await redis.setValue(token, expireAt, expireTime);
 
-        return res.json(member);
-    } catch(err) {
-        return next(err);
-    }
-});
+//         let html = nunjucks.render('./mailTemplates/resetVerify.html', {
+//             expireTime: expireAt,
+//             verifiedLink: `${config[env].web.url}/api/auth/active?token=${token}`
+//         });
 
-router.get('/forgotPasswd', async (req, res, next) => {
-    try {
-      req.checkQuery('token', 'invalid token').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
-        
-        let { token } = req.query;
+//         mailer({
+//             subject: '重新驗證您的 NOWnews 帳戶',
+//             to: member.email,
+//             html: html
+//         });
 
-        // validate jwt token
-        const decode = await verifyToken(token);
-        if (!decode) {
-            throw new Error(11002);
-        }
-        // check token if it is expired or used
-        const value = await redis.getValue(token);
-        if (!value) {
-            throw new Error(11002);
-        }
+//         return res.json(member);
+//     } catch(err) {
+//         return next(err);
+//     }
+// });
 
-        const member = await Member.findByEmail(decode.email);
-        if (!member) {
-            throw new Error(10000);
-        }
+// router.get('/forgotPasswd', async (req, res, next) => {
+//     try {
+//       req.checkQuery('token', 'invalid token').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
 
-        await redis.removeValue(token);
+//         let { token } = req.query;
 
-        return res.json(member);
-    } catch (err) {
-        return next(err);
-    }
-});
+//         // validate jwt token
+//         const decode = await verifyToken(token);
+//         if (!decode) {
+//             throw new Error(11002);
+//         }
+//         // check token if it is expired or used
+//         const value = await redis.getValue(token);
+//         if (!value) {
+//             throw new Error(11002);
+//         }
+
+//         const member = await Member.findByEmail(decode.email);
+//         if (!member) {
+//             throw new Error(10000);
+//         }
+
+//         await redis.removeValue(token);
+
+//         return res.json(member);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 
-// thirdparty signup (e.g. Facebook Google..etc)
-router.post('/thirdPartySignup', async (req, res, next) => {
-    try {
-        req.checkBody('thirdPartyId').notEmpty();
-        req.checkBody('provider').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
+// // thirdparty signup (e.g. Facebook Google..etc)
+// router.post('/thirdPartySignup', async (req, res, next) => {
+//     try {
+//         req.checkBody('thirdPartyId').notEmpty();
+//         req.checkBody('provider').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
 
-        let { email } = req.body;
-        let member = await Member.findByEmail(email);
-        // if member's email is registered, return email is used? (need to discuss)
-        if (member) {
-            throw new Error(11004);
-        }
-        let data = new Member(req.body);
-        let newMember = await data.new();
+//         let { email } = req.body;
+//         let member = await Member.findByEmail(email);
+//         // if member's email is registered, return email is used? (need to discuss)
+//         if (member) {
+//             throw new Error(11004);
+//         }
+//         let data = new Member(req.body);
+//         let newMember = await data.new();
 
-        return res.json(newMember);        
-    } catch (err) {
-        return next(err);
-    }
-});
+//         return res.json(newMember);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
-router.post('/thirdPartySignin', async (req, res, next) => {
-    try {
-        req.checkBody('thirdPartyId').notEmpty();
-        req.checkBody('provider').notEmpty();
-        const err = req.validationErrors();
-        if (err) {
-            throw new Error(err[0].msg);
-        }
-        let { thirdPartyId } = req.body;
-        let member = Member.findByThirdPartyId(thirdPartyId);
-        if (!member) {
-            throw new Error(10000);
-        }
-        return res.json(member);
-    } catch (err) {
-        return next(err);
-    }
-});
+// router.post('/thirdPartySignin', async (req, res, next) => {
+//     try {
+//         req.checkBody('thirdPartyId').notEmpty();
+//         req.checkBody('provider').notEmpty();
+//         const err = req.validationErrors();
+//         if (err) {
+//             throw new Error(err[0].msg);
+//         }
+//         let { thirdPartyId } = req.body;
+//         let member = Member.findByThirdPartyId(thirdPartyId);
+//         if (!member) {
+//             throw new Error(10000);
+//         }
+//         return res.json(member);
+//     } catch (err) {
+//         return next(err);
+//     }
+// });
 
 module.exports = router;

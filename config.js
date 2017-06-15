@@ -6,7 +6,7 @@ module.exports = {
     oauth: {
         clientId: '773287785720-gfh8q720qjo6sdoar8hmdj2jr4gmlka8.apps.googleusercontent.com',
         clientSecret: 'Xa1zBF8R0g5Y9nN5fbElHaPv',
-        callbackURL: 'http://memberapi.nownews.com:8888/api/auth/oauth/callback'
+        callbackURL: 'https://memberapi.nownews.com/api/auth/oauth/callback'
     },
     dev: {
         mongodb: {
