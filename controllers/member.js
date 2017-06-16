@@ -24,8 +24,6 @@ router.get('/', async (req, res, next) => {
         if (!member) {
             throw new Error(10000);
         }
-        redis.removeValue(apiToken);
-        redis.setValue(apiToken, value, 1800);
         return res.json(member);
     } catch (err) {
         return next(err);
@@ -47,8 +45,6 @@ router.patch('/update', async (req, res, next) => {
 
         let member = await Member.updateProfile(memberId, req.body);
         member = await Member.findByMemberId(memberId);
-        redis.removeValue(apiToken);
-        redis.setValue(apiToken, value, 1800);
         return res.json(member);
     } catch (err) {
         return next(err);
@@ -61,7 +57,7 @@ router.get('/logout', async (req, res, next) => {
 
         let apiToken = req.header('X-NOWnews-Member');
         let decode = await verifyToken(apiToken);
-        redis.removeValue(token);
+        redis.removeValue(apiToken);
         return res.send(200).end();
     } catch (err) {
         return next(err);
