@@ -85,7 +85,7 @@ router.get('/oauth/callback',
                 member = await data.new();
             }
             let token = await genToken(member.id, 'login');
-            redis.setValue(token, member, 1800);
+            redis.setValue(token, member, 2592000);
             return res.redirect(`https://dev.nownews.com/api/oauth_callback?token=${token}`);
         } catch (err) {
             console.log(err);

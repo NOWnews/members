@@ -40,6 +40,9 @@ router.patch('/update', async (req, res, next) => {
         let apiToken = req.header('X-NOWnews-Member');
         let decode = await verifyToken(apiToken);
         let value = await redis.getValue(apiToken);
+        if (!value) {
+            throw new Error(11001);
+        }
         let memberId = value.id;
 
         let member = await Member.updateProfile(memberId, req.body);
