@@ -1,14 +1,13 @@
 import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import mongoose, { Schema } from 'mongoose';
-import uuid from 'node-uuid';
 import Promise from 'bluebird'
 
 const clientSafeFields = ['id', 'name', 'email', 'phone', 'gender', 'birthday', 'status']
 
 const schema = new Schema({
     id: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
         unique : true
     },
@@ -61,7 +60,7 @@ const schema = new Schema({
 
 // instance methods
 schema.methods.new = function() {
-    this.id = uuid.v4();
+    this.id = mongoose.Types.ObjectId();
     return new Promise((resolve, reject) => {
         return this.save().then(res => {
             return resolve(_.pick(res, clientSafeFields));
@@ -122,8 +121,8 @@ schema.statics.findByEmail = function(email) {
     return new Promise((resolve, reject) => {
         return this.findOne({ email })
           .then((member) => {
-              const result = member ? _.pick(member, clientSafeFields) : null; 
-              return resolve(result);              
+              const result = member ? _.pick(member, clientSafeFields) : null;
+              return resolve(result);
           })
           .catch(err => {
               return reject(err)
@@ -176,7 +175,5 @@ schema.statics.updatePasswd = function(email, password) {
             })
     });
 }
-
-schema.index({ id: 1 }, { sparse: true });
 
 module.exports = mongoose.model('member', schema);
