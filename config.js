@@ -50,7 +50,7 @@ module.exports = {
             db: 'members_production'
         },
         web: {
-            url: 'https://dev.nownews.com'
+            url: 'https://www.nownews.com'
         },
         api: {
             url: 'http://member.nownews.com:8888'
