@@ -28,7 +28,7 @@ module.exports = {
     },
     staging: {
         mongodb: {
-            host: 'mongodb://192.168.40.68:27017',
+            host: 'mongodb://localhost:27017',
             db: 'members_staging'
         },
         web: {
@@ -46,14 +46,14 @@ module.exports = {
     },
     production: {
         mongodb: {
-            host: 'mongodb://192.168.40.68:27017',
+            host: 'mongodb://localhost:27017',
             db: 'members_production'
         },
         web: {
             url: 'https://www.nownews.com'
         },
         api: {
-            url: 'http://member.nownews.com:8888'
+            url: 'https://memberapi.nownews.com'
         },
         redis: {
             host: "localhost",
