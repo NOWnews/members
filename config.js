@@ -53,7 +53,7 @@ module.exports = {
             url: 'https://www.nownews.com'
         },
         api: {
-            url: 'http://member.nownews.com:8888'
+            url: 'https://memberapi.nownews.com'
         },
         redis: {
             host: "localhost",
